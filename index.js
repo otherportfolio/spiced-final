@@ -35,7 +35,7 @@ app.use(csurf());
 
 ////////// middleware to put c-surf in the cookie ////////////
 app.use(function (req, res, next) {
-    res.cookie("mytoken:", req.csrfToken());
+    res.cookie("mytoken", req.csrfToken());
     next();
 });
 
@@ -57,6 +57,7 @@ const multer = require("multer");
 const uidSafe = require("uid-safe");
 const path = require("path");
 const { promises } = require("fs");
+const { compare } = require("bcryptjs");
 
 ////////// BOILER PLATE FOR MULTER /////////////
 const diskStorage = multer.diskStorage({
@@ -90,18 +91,9 @@ app.get("/welcome", function (req, res) {
     }
 });
 
-///// redirects that guarantee that if the user is logged out the url is /welcome /////
-app.get("*", function (req, res) {
-    if (!req.session.user_Id) {
-        res.redirect("/welcome");
-    } else {
-        res.sendFile(__dirname + "/index.html");
-    }
-});
-
 /////////////// POST /registration ///////////////////
 app.post("/register", (req, res) => {
-    // console.log("req.body:", req.body);
+    console.log("req.body:", req.body);
 
     bc.hash(req.body.password).then((hashedPw) => {
         console.log("hashedPw:", hashedPw);
@@ -117,6 +109,39 @@ app.post("/register", (req, res) => {
                 console.log("err in hash in POST REGISTRATION:", err);
                 res.json({ success: false });
             });
+    });
+});
+
+/////////////// GET /login ///////////////////
+app.get("/login", (req, res) => {
+    res.render("/login");
+});
+
+/////////////// POST /login ///////////////////
+app.post("/login", (req, res) => {
+    console.log("req.body in Login:", req.body.email);
+
+    db.getEmail(req.body.email).then((results) => {
+        console.log("Results login:", results.rows[0]);
+        if (!results.rows[0].password) {
+            res.json({ success: false });
+        } else {
+            compare(req.body.password, results.rows[0].password)
+                .then((matchValue) => {
+                    console.log(matchValue);
+                    if (matchValue == true) {
+                        req.session.hasUserId = true;
+                        req.session.user_Id = results.rows[0].id;
+                        req.session.email = req.body.email;
+                        req.session.logged = true;
+                        res.json({ success: true });
+                    }
+                })
+                .catch((err) => {
+                    console.log("ERROR in POST /Login:", err);
+                    res.json({ success: false });
+                });
+        }
     });
 });
 
@@ -147,6 +172,15 @@ app.post("/register", (req, res) => {
 // });
 // ///////////// END OF MULTER - UPLOAD ///////////////
 // ////////////////////////////////////////////////////
+
+///// redirects that guarantee that if the user is logged out the url is /welcome /////
+app.get("*", function (req, res) {
+    if (!req.session.user_Id) {
+        res.redirect("/welcome");
+    } else {
+        res.sendFile(__dirname + "/index.html");
+    }
+});
 
 app.listen(8080, function () {
     console.log("I'm listening.");

@@ -1,23 +1,21 @@
 import React from "react";
 import axios from "./axios_copy.js";
-import { Link } from "react-router-dom";
 
-export default class Registration extends React.Component {
+export default class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
     }
+
     handleChange(e) {
-        // this[e.target.name] = e.target.value
+        // will get the prop by its name and update its value
         this.setState({
             [e.target.name]: e.target.value,
         });
     }
     submit() {
         axios
-            .post("/register", {
-                first: this.state.first,
-                last: this.state.last,
+            .post("/login", {
                 email: this.state.email,
                 password: this.state.password,
             })
@@ -36,6 +34,7 @@ export default class Registration extends React.Component {
                 })
             );
     }
+
     render() {
         return (
             <div>
@@ -44,23 +43,22 @@ export default class Registration extends React.Component {
                         Oops! Something went wrong. Try again.
                     </div>
                 )}
-                <p>First Name</p>
-                <input onChange={(e) => this.handleChange(e)} name="first" />
-                <p>Last Name</p>
-                <input onChange={(e) => this.handleChange(e)} name="last" />
+
                 <p>E-mail</p>
                 <input onChange={(e) => this.handleChange(e)} name="email" />
                 <p>Password</p>
+
                 <input
                     onChange={(e) => this.handleChange(e)}
                     type="password"
                     name="password"
                 />
                 <p></p>
-                <button onClick={(e) => this.submit()}>Submit</button>
+                <button onClick={(e) => this.submit()}>Login</button>
                 <p></p>
-                <Link to="/login">Login</Link>
             </div>
         );
     }
 }
+
+// export default ;
