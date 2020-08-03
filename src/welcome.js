@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import Registration from "./register.js";
 import { HashRouter, Route } from "react-router-dom";
 import Login from "./login.js";
+import ResetPassword from "./resetpassword.js";
+import axios from "./axios_copy.js";
 
 export default function Welcome() {
     return (
@@ -11,9 +13,10 @@ export default function Welcome() {
             <img src="/images/cookie_monster_sad.png" alt="big image" />
             {/* <Registration /> */}
             <HashRouter>
-                <div>
+                <div id="res_login">
                     <Route exact path="/" component={Registration} />
                     <Route path="/login" component={Login} />
+                    <Route path="/resetpassword" component={ResetPassword} />
                 </div>
             </HashRouter>
         </div>

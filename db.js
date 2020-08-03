@@ -13,7 +13,32 @@ module.exports.addRegister = (first, last, email, hashedPw) => {
 
 //getting the password connected to the email
 module.exports.getEmail = (email) => {
-    let s = "SELECT password, id FROM users WHERE email = $1";
+    let s = "SELECT password, email, id FROM users WHERE email = $1";
     let params = [email];
     return db.query(s, params);
+};
+
+//storing the code
+module.exports.storeCode = (email, code) => {
+    let q =
+        "INSERT INTO password_reset_codes (email, code) VALUES ($1, $2) RETURNING *";
+    let params = [email, code];
+    return db.query(q, params);
+};
+
+//getting the code
+module.exports.findCode = (email) => {
+    let q =
+        "SELECT * FROM password_reset_codes WHERE email = $1 AND CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes' ORDER BY id DESC LIMIT 1";
+    let params = [email];
+    console.log("query:", params);
+    return db.query(q, params);
+};
+
+//storing new Password
+module.exports.addNewPassword = (email, hashedPw) => {
+    let q = "UPDATE users SET password = $2 WHERE email = $1";
+    let params = [email, hashedPw];
+    console.log("query:", params);
+    return db.query(q, params);
 };

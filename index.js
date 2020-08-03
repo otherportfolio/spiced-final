@@ -6,6 +6,9 @@ const bc = require("./bc.js");
 // const { COOKIE_SESSION } = require("./secrets.json");
 const cookieSession = require("cookie-session");
 const csurf = require("csurf");
+const aws = require("aws-sdk");
+const cryptoRandomString = require("crypto-random-string");
+const ses = require("./ses.js");
 // const s3 = require("./s3.js");
 // const { s3Url } = require("./config");
 
@@ -58,6 +61,7 @@ const uidSafe = require("uid-safe");
 const path = require("path");
 const { promises } = require("fs");
 const { compare } = require("bcryptjs");
+const { getMaxListeners } = require("process");
 
 ////////// BOILER PLATE FOR MULTER /////////////
 const diskStorage = multer.diskStorage({
@@ -140,6 +144,61 @@ app.post("/login", (req, res) => {
                 .catch((err) => {
                     console.log("ERROR in POST /Login:", err);
                     res.json({ success: false });
+                });
+        }
+    });
+});
+
+///////// POST resetpassword /////////////
+app.post("/resetpassword", (req, res) => {
+    const secretCode = cryptoRandomString({
+        length: 6,
+    });
+    db.getEmail(req.body.email).then((results) => {
+        console.log("Results POST resetpassword:", results.rows[0]);
+        if (results.rows[0]) {
+            console.log("user found!");
+            let email = results.rows[0].email;
+            console.log("results.rows[0]", results.rows[0]);
+            let code = secretCode;
+            let subj = "get the code";
+            db.storeCode(email, code).then((results) => {
+                console.log("storeCode results:", results.rows[0].email);
+                console.log("storeCode results:", results.rows[0].code);
+                ses.sendEmail(email, code, subj).then(() => {
+                    res.json({ sendEmailSuccess: true });
+                });
+            });
+        }
+    });
+}); // end of post resetpassword
+
+///////////// POST store New Password //////////////
+app.post("/submitcode", (req, res) => {
+    let email = req.body.email;
+    let password = req.body.password;
+    let neuCode = req.body.code;
+    db.findCode(email).then((results) => {
+        console.log("Results in findCode:", results.rows[0].code);
+        console.log("Password in findCode:", password);
+        console.log("code check:", req.body.code, results.rows[0].code);
+        if (req.body.code === results.rows[0].code) {
+            console.log("getting here!");
+            bc.hash(password)
+                .then((hashedPw) => {
+                    console.log("hashedPw:", hashedPw);
+                    db.addNewPassword(email, hashedPw).then((results) => {
+                        console.log(
+                            "hashedPw after addNewPassword:",
+                            results.hashedPw
+                        );
+                        req.session.hasNewPass = true;
+                        res.json({ storePassSuccess: true });
+                    });
+                })
+                .catch((err) => {
+                    console.log("ERROR in POST store New Password:", err);
+                    res.json({ storePassSuccess: false });
                 });
         }
     });

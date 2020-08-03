@@ -33,5 +33,7 @@ exports.sendEmail = (to, text, subj) => {
                 },
             },
         })
-        .promise();
+        .promise()
+        .then(() => console.log("SES worked!"))
+        .catch((err) => console.log(err));
 };

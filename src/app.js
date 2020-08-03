@@ -2,6 +2,7 @@
 import React from "react";
 import Presentational from "./presentational";
 import Uploader from "./uploader";
+import Profile from "./profile.js";
 
 //here component loading the users profile picture
 
