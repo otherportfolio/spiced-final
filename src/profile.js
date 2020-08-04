@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import BioEditor from "./bio.js";
+import Presentational from "./presentational.js";
 
 ////////////////////// PART V /////////////////////
 
@@ -10,11 +11,7 @@ export default function Profile(props) {
             <h1>I am a profile pic</h1>
             {/* app.js knows the user's first and last name, so to acess it we use props, and pass them to the argument */}
             {/* then give inside the Compnent the props that we need, ex: */}
-            <Component
-                first={props.first}
-                last={props.last}
-                image={props.image}
-            />
+            <Component first={props.first} last={props.last} url={props.url} />
             <BioEditor />
         </div>
     );

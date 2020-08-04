@@ -31,7 +31,7 @@ module.exports.findCode = (email) => {
     let q =
         "SELECT * FROM password_reset_codes WHERE email = $1 AND CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes' ORDER BY id DESC LIMIT 1";
     let params = [email];
-    console.log("query:", params);
+    // console.log("query:", params);
     return db.query(q, params);
 };
 
@@ -39,6 +39,19 @@ module.exports.findCode = (email) => {
 module.exports.addNewPassword = (email, hashedPw) => {
     let q = "UPDATE users SET password = $2 WHERE email = $1";
     let params = [email, hashedPw];
-    console.log("query:", params);
+    // console.log("query:", params);
+    return db.query(q, params);
+};
+
+module.exports.getUserInfo = (id) => {
+    let q = "SELECT id, first, last, url FROM users WHERE id = $1";
+    let params = [id];
+    console.log("getUserInfo query:", params);
+    return db.query(q, params);
+};
+
+module.exports.addPicture = function (id, url) {
+    let q = "UPDATE users SET url=$2 WHERE id=$1 RETURNING *";
+    let params = [id, url];
     return db.query(q, params);
 };

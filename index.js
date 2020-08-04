@@ -6,11 +6,11 @@ const bc = require("./bc.js");
 // const { COOKIE_SESSION } = require("./secrets.json");
 const cookieSession = require("cookie-session");
 const csurf = require("csurf");
-const aws = require("aws-sdk");
+// const aws = require("aws-sdk");
 const cryptoRandomString = require("crypto-random-string");
 const ses = require("./ses.js");
-// const s3 = require("./s3.js");
-// const { s3Url } = require("./config");
+const s3 = require("./s3.js");
+const { s3Url } = require("./config");
 
 ////////// compression - middleware ////////////
 app.use(compression());
@@ -59,9 +59,8 @@ if (process.env.NODE_ENV != "production") {
 const multer = require("multer");
 const uidSafe = require("uid-safe");
 const path = require("path");
-const { promises } = require("fs");
+// const { promises } = require("fs");
 const { compare } = require("bcryptjs");
-const { getMaxListeners } = require("process");
 
 ////////// BOILER PLATE FOR MULTER /////////////
 const diskStorage = multer.diskStorage({
@@ -202,33 +201,49 @@ app.post("/submitcode", (req, res) => {
                 });
         }
     });
+}); // end of post submitcode
+
+///////////// GET /user //////////////
+
+app.get("/user", (req, res) => {
+    console.log("hit /user route!");
+    db.getUserInfo(req.session.user_Id)
+        .then((results) => {
+            console.log("Results in getUserInfo:", results.rows[0]);
+            // res.json({ success: true });
+            res.json(results.rows[0]);
+        })
+        .catch((err) => {
+            console.log("ERROR in GET /user:", err);
+            res.json({ success: false });
+        });
 });
 
 // ////////////////////////////////////////////////////
 // //////////////// MULTER - UPLOAD POST //////////////////
 
-// // this bit is a middleware: "uploader.single("file")"
-// app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
-//     //req.body - is the rest of our input fields: username, title, description
-//     const { first, last, email, password } = req.body;
-//     // console.log("input:", req.body);
+// this bit is a middleware: "uploader.single("file")"
+app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
+    //req.body - is the rest of our input fields: username, title, description
+    // const { first, last, email, password } = req.body;
+    // console.log("input:", req.body);
 
-//     //req.file - is the file that was just uploaded
-//     const { filename } = req.file;
-//     // console.log("file:", req.file);
+    //req.file - is the file that was just uploaded
+    const { filename } = req.file;
+    // console.log("file:", req.file);
 
-//     const url = s3Url + filename;
+    const url = s3Url + filename;
 
-//     //insert the title, description, username and image url into the table
-//     db.addRegister(url, first, last, email, password)
-//         .then((results) => {
-//             // console.log("newImage rows[0]:", results.rows[0]);
-//             res.json(results.rows[0]);
-//         })
-//         .catch((err) => {
-//             console.log("ERROR in upload/addRegister:", err);
-//         });
-// });
+    //insert the title, description, username and image url into the table
+    db.addPicture(req.session.user_Id, url)
+        .then((results) => {
+            console.log("addPicture rows[0]:", results.rows[0]);
+            res.json(results.rows[0]);
+        })
+        .catch((err) => {
+            console.log("ERROR in upload/addPicture:", err);
+        });
+});
 // ///////////// END OF MULTER - UPLOAD ///////////////
 // ////////////////////////////////////////////////////
 

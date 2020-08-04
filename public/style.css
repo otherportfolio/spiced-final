@@ -4,3 +4,21 @@
     top: 15%;
     left: 50%;
 }
+
+.logo {
+    width: 300px;
+    height: 300px;
+}
+h1 {
+    position: absolute;
+    text-align: center;
+    top: 10%;
+    left: 50%;
+}
+
+h2 {
+    position: absolute;
+    text-align: center;
+    top: 20%;
+    left: 50%;
+}
