@@ -1,5 +1,5 @@
 import React from "react";
-import Presentational from "./presentational";
+import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
 import Profile from "./profile.js";
 import Logo from "./logo.js";
@@ -14,7 +14,14 @@ export default class App extends React.Component {
             uploaderIsVisible: false, //setting the Uploader to true
         };
         this.toggleModal = this.toggleModal.bind(this); //binding "this" to the function here so we can use it later in the component
-        // this.iAmAMethodInApp = this.iAmAMethodInApp.bind(this);
+        this.userPicture = this.ProfilePic.bind(this);
+    }
+
+    handleChange(e) {
+        // this[e.target.name] = e.target.value
+        this.setState({
+            [e.target.name]: e.target.value,
+        });
     }
 
     //comunicate with the server as soon as the App loads
@@ -46,10 +53,11 @@ export default class App extends React.Component {
     }
 
     //demo passing a Method to the child (Uploader)
-    userPicture() {
+    ProfilePic(pic) {
+        console.log("ProfilePic:", pic);
         this.setState({
-            url: this.state.url,
-            uploaderIsVisible: !this.state.uploaderIsVisible,
+            url: pic,
+            uploaderIsVisible: false,
         });
     }
 
@@ -75,17 +83,18 @@ export default class App extends React.Component {
                     Sanity check: App.js
                 </h2>
                 {/* "go find this.toggleModal in the Constructor" */}
-                <p onClick={this.toggleModal}>Hello :)</p>
+                {/* <p onClick={this.toggleModal}>Hello :)</p> */}
                 {/* a component inside App component */}
                 {/* here Presentational is a Child of App */}
                 {/* serving Presentational component the props from App */}
-                <Presentational
+                <ProfilePic
+                    toggleModal={(e) => {
+                        this.toggleModal(e);
+                    }}
                     first={this.state.first}
                     last={this.state.last}
                     url={this.state.url}
-                    onClick={() => {
-                        this.toggleModal();
-                    }}
+
                     // iAmAMethodInApp={this.iAmAMethodInApp} //passing the Method function here, so it becomes a props of Presentational, now Presentational can call that function
                     //we should ALSO bind this one in the Constructor OR use a Callback function
                     // we don't use "this.state" because the Method doesn't live inside "this.state"

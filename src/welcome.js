@@ -1,10 +1,9 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import Registration from "./register.js";
 import { HashRouter, Route } from "react-router-dom";
 import Login from "./login.js";
 import ResetPassword from "./resetpassword.js";
-import Presentational from "./presentational.js";
+import ProfilePic from "./profilepic.js";
 
 export default function Welcome() {
     return (
@@ -17,7 +16,7 @@ export default function Welcome() {
                     <Route exact path="/" component={Registration} />
                     <Route path="/login" component={Login} />
                     <Route path="/resetpassword" component={ResetPassword} />
-                    <Route path="/user" component={Presentational} />
+                    <Route path="/user" component={ProfilePic} />
                 </div>
             </HashRouter>
         </div>

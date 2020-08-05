@@ -6,8 +6,8 @@
 }
 
 .logo {
-    width: 300px;
-    height: 300px;
+    width: 200px;
+    height: 200px;
 }
 h1 {
     position: absolute;
@@ -21,4 +21,17 @@ h2 {
     text-align: center;
     top: 20%;
     left: 50%;
+}
+.presentational {
+    border: solid black;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    text-align: center;
+    top: 5%;
+    left: 70%;
+}
+.profile_pic {
+    width: 200px;
+    height: 200px;
 }

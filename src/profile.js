@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import BioEditor from "./bio.js";
-import Presentational from "./presentational.js";
+import Presentational from "./profilepic.js";
 
 ////////////////////// PART V /////////////////////
 
