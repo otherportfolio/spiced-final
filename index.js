@@ -262,18 +262,27 @@ app.post("/editbio", (req, res) => {
 //todo://///////// GET /user/ + id //////////////
 app.get("/user/:id.json", (req, res) => {
     console.log("hit /user/ + id route!");
-    db.getUsersInfo(req.params.user_Id)
-        .then((results) => {
-            if (req.params.user_Id === req.session.user_Id) {
-                console.log("results from GET /user/ +id:", results);
-                res.json({ sameId: true });
-            } else {
-                res.json({ data: results.rows[0] });
-            }
-        })
-        .catch((err) => {
-            console.log("ERROR in GET /user/ +id::", err);
-        });
+    console.log("req.params", req.params);
+    console.log("req.session", req.session.user_Id);
+    if (req.params.id == req.session.user_Id) {
+        res.json({ sameId: true });
+    } else {
+        db.getUsersInfo(req.params.id)
+            .then((results) => {
+                if (!results.rows[0]) {
+                    console.log(
+                        "results from GET /user/ +id:",
+                        results.rows[0].id
+                    );
+                    res.json({ sameId: true });
+                } else {
+                    res.json({ data: results.rows[0] });
+                }
+            })
+            .catch((err) => {
+                console.log("ERROR in GET /user/ +id::", err);
+            });
+    }
 });
 
 //todo://///////// GET /* //////////////

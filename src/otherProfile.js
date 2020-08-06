@@ -16,7 +16,7 @@ class otherProfile extends React.Component {
         console.log("const id:", id);
         axios.get("/user/" + id + ".json").then(({ data }) => {
             console.log("data in otherProfile:", data);
-            history.pushState({ state }, title, url);
+            // history.pushState({ state }, title, url);
             if (data.sameId) {
                 this.props.history.push("/");
             } else {

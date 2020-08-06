@@ -65,6 +65,6 @@ module.exports.addBio = function (id, bio) {
 module.exports.getUsersInfo = (id) => {
     let q = "SELECT id, first, last, url, bio FROM users WHERE id = $1";
     let params = [id];
-    console.log("getUserInfo query:", params);
+    console.log("getUsersInfo query:", params);
     return db.query(q, params);
 };
