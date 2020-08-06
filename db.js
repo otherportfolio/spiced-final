@@ -11,14 +11,14 @@ module.exports.addRegister = (first, last, email, hashedPw) => {
     return db.query(q, params);
 };
 
-//getting the password connected to the email
+//! getting the password connected to the email
 module.exports.getEmail = (email) => {
     let s = "SELECT password, email, id FROM users WHERE email = $1";
     let params = [email];
     return db.query(s, params);
 };
 
-//storing the code
+//! storing the code
 module.exports.storeCode = (email, code) => {
     let q =
         "INSERT INTO password_reset_codes (email, code) VALUES ($1, $2) RETURNING *";
@@ -26,7 +26,7 @@ module.exports.storeCode = (email, code) => {
     return db.query(q, params);
 };
 
-//getting the code
+//! getting the code
 module.exports.findCode = (email) => {
     let q =
         "SELECT * FROM password_reset_codes WHERE email = $1 AND CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes' ORDER BY id DESC LIMIT 1";
@@ -35,7 +35,7 @@ module.exports.findCode = (email) => {
     return db.query(q, params);
 };
 
-//storing new Password
+//! storing new Password
 module.exports.addNewPassword = (email, hashedPw) => {
     let q = "UPDATE users SET password = $2 WHERE email = $1";
     let params = [email, hashedPw];
@@ -59,5 +59,12 @@ module.exports.addPicture = function (id, url) {
 module.exports.addBio = function (id, bio) {
     let q = "UPDATE users SET bio=$2 WHERE id=$1 RETURNING*";
     let params = [id, bio];
+    return db.query(q, params);
+};
+
+module.exports.getUsersInfo = (id) => {
+    let q = "SELECT id, first, last, url, bio FROM users WHERE id = $1";
+    let params = [id];
+    console.log("getUserInfo query:", params);
     return db.query(q, params);
 };

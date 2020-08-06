@@ -3,7 +3,7 @@ import BioEditor from "./bio.js";
 import ProfilePic from "./profilepic.js";
 import Uploader from "./uploader.js";
 
-////////////////////// PART V /////////////////////
+//Todo ////////////////////// PART V /////////////////////
 
 export default function Profile(props) {
     console.log("props in Profile:", props);
@@ -35,11 +35,13 @@ export default function Profile(props) {
                             {props.first} {props.last}
                         </h3>
                         <h3>{props.bio}</h3>
+                        <p></p>
                         <BioEditor bio={props.bio} />
                     </div>
                 </div>
-                {/* app.js knows the user's first and last name, so to acess it we use props, and pass them to the argument */}
-                {/* then give inside the Compnent the props that we need, ex: */}{" "}
+                {/*  //! app.js knows the user's first and last name, so to acess it
+                // ! we use props, and pass them to the argument * then give
+                //! inside the Component the props that we need, ex:{" "} */}
             </div>
         </React.Fragment>
     );

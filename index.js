@@ -12,16 +12,16 @@ const ses = require("./ses.js");
 const s3 = require("./s3.js");
 const { s3Url } = require("./config");
 
-////////// compression - middleware ////////////
+//todo://////// compression - middleware ////////////
 app.use(compression());
 
-////////// express.urlencoded - middleware: parsing url ////////////////
+//todo://////// express.urlencoded - middleware: parsing url ////////////////
 app.use(express.urlencoded({ extended: false }));
 
-///// express static - middleware: handling the files /////
+//todo:/// express static - middleware: handling the files /////
 app.use(express.static("./public"));
 
-////////// cookie-session middleware //////////
+//todo://////// cookie-session middleware //////////
 app.use(
     cookieSession({
         secret: "all the secrets",
@@ -30,19 +30,19 @@ app.use(
     })
 );
 
-/////////// express.json - middleware: parsing json /////////////
+//todo:///////// express.json - middleware: parsing json /////////////
 app.use(express.json());
 
-////////// c-surf middleware ////////////
+//todo://////// c-surf middleware ////////////
 app.use(csurf());
 
-////////// middleware to put c-surf in the cookie ////////////
+//todo://////// middleware to put c-surf in the cookie ////////////
 app.use(function (req, res, next) {
     res.cookie("mytoken", req.csrfToken());
     next();
 });
 
-////////// handling the transpiler /////////////
+//todo://////// handling the transpiler /////////////
 if (process.env.NODE_ENV != "production") {
     app.use(
         "/bundle.js",
@@ -53,16 +53,16 @@ if (process.env.NODE_ENV != "production") {
 } else {
     app.use("/bundle.js", (req, res) => res.sendFile(`${__dirname}/bundle.js`));
 }
-////////// end of handling the transpiler /////////////
+//todo://////// end of handling the transpiler /////////////
 
-///// UPLOAD WITH MULTER /////////
+//todo:/// UPLOAD WITH MULTER /////////
 const multer = require("multer");
 const uidSafe = require("uid-safe");
 const path = require("path");
 // const { promises } = require("fs");
 const { compare } = require("bcryptjs");
 
-////////// BOILER PLATE FOR MULTER /////////////
+//todo://////// BOILER PLATE FOR MULTER /////////////
 const diskStorage = multer.diskStorage({
     destination: function (req, file, callback) {
         callback(null, __dirname + "/uploads");
@@ -81,11 +81,11 @@ const uploader = multer({
     },
 });
 
-////////// END OF BOILER PLATE FOR MULTER /////////////
+//todo://////// END OF BOILER PLATE FOR MULTER /////////////
 
-//////////////////////////////////////////////////////////////////////////////////////////
+//todo:////////////////////////////////////////////////////////////////////////////////////////
 
-///// welcome route /////
+//todo:/// welcome route /////
 app.get("/welcome", function (req, res) {
     if (req.session.user_Id) {
         res.redirect("/");
@@ -94,7 +94,7 @@ app.get("/welcome", function (req, res) {
     }
 });
 
-/////////////// POST /registration ///////////////////
+//todo:///////////// POST /registration ///////////////////
 app.post("/register", (req, res) => {
     console.log("req.body:", req.body);
 
@@ -115,12 +115,12 @@ app.post("/register", (req, res) => {
     });
 });
 
-/////////////// GET /login ///////////////////
+//todo:///////////// GET /login ///////////////////
 app.get("/login", (req, res) => {
     res.render("/login");
 });
 
-/////////////// POST /login ///////////////////
+//todo:///////////// POST /login ///////////////////
 app.post("/login", (req, res) => {
     console.log("req.body in Login:", req.body.email);
 
@@ -148,7 +148,7 @@ app.post("/login", (req, res) => {
     });
 });
 
-///////// POST resetpassword /////////////
+//todo://///// POST resetpassword /////////////
 app.post("/resetpassword", (req, res) => {
     const secretCode = cryptoRandomString({
         length: 6,
@@ -172,7 +172,7 @@ app.post("/resetpassword", (req, res) => {
     });
 }); // end of post resetpassword
 
-///////////// POST store New Password //////////////
+//todo://///////// POST store New Password //////////////
 app.post("/submitcode", (req, res) => {
     let email = req.body.email;
     let password = req.body.password;
@@ -203,7 +203,7 @@ app.post("/submitcode", (req, res) => {
     });
 }); // end of post submitcode
 
-///////////// GET /user //////////////
+//todo://///////// GET /user //////////////
 
 app.get("/user", (req, res) => {
     console.log("hit /user route!");
@@ -219,10 +219,9 @@ app.get("/user", (req, res) => {
         });
 });
 
-// ////////////////////////////////////////////////////
-// //////////////// MULTER - UPLOAD POST //////////////////
+//todo://////////////// MULTER - UPLOAD POST //////////////////
 
-// this bit is a middleware: "uploader.single("file")"
+//! this bit is a middleware: "uploader.single("file")"
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     //req.body - is the rest of our input fields: username, title, description
     // const { first, last, email, password } = req.body;
@@ -234,7 +233,7 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
 
     const url = s3Url + filename;
 
-    //insert the title, description, username and image url into the table
+    //!insert the title, description, username and image url into the table
     db.addPicture(req.session.user_Id, url)
         .then((results) => {
             console.log("addPicture rows[0]:", results.rows[0]);
@@ -244,10 +243,9 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
             console.log("ERROR in upload/addPicture:", err);
         });
 });
-// ///////////// END OF MULTER - UPLOAD ///////////////
-// ////////////////////////////////////////////////////
+//todo: ///////////// END OF MULTER - UPLOAD ///////////////
 
-///////////// GET /editbio //////////////
+//todo://///////// GET /editbio //////////////
 app.post("/editbio", (req, res) => {
     console.log("hit /editbio route!");
     console.log("input EditBio:", req.body);
@@ -261,7 +259,26 @@ app.post("/editbio", (req, res) => {
         });
 });
 
-///// redirects that guarantee that if the user is logged out the url is /welcome /////
+//todo://///////// GET /user/ + id //////////////
+app.get("/user/:id.json", (req, res) => {
+    console.log("hit /user/ + id route!");
+    db.getUsersInfo(req.params.user_Id)
+        .then((results) => {
+            if (req.params.user_Id === req.session.user_Id) {
+                console.log("results from GET /user/ +id:", results);
+                res.json({ sameId: true });
+            } else {
+                res.json({ data: results.rows[0] });
+            }
+        })
+        .catch((err) => {
+            console.log("ERROR in GET /user/ +id::", err);
+        });
+});
+
+//todo://///////// GET /* //////////////
+
+//! redirects that guarantee that if the user is logged out the url is /welcome /////
 app.get("*", function (req, res) {
     if (!req.session.user_Id) {
         res.redirect("/welcome");
