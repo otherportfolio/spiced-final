@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "./axios_copy.js";
 //here we want to conditionally render 3 things:
 //app.js loads Profile, Profile renders Bio
 //if the user doesn't have a Bio, add a button or default text
@@ -12,18 +13,72 @@ class BioEditor extends React.Component {
         super(props);
         this.state = {
             editMode: "read",
-            editMode: "edit",
+            value: this.props.bio,
         };
     }
+    handleChange(e) {
+        // this[e.target.name] = e.target.value
+        this.setState({
+            value: e.target.value,
+        });
+    }
+    toggleBio() {
+        this.setState({
+            editMode: "edit",
+        });
+    }
+
+    postBio(e) {
+        e.preventDefault();
+        let formData = new FormData();
+        formData.append("bio", this.state.value);
+        axios.post("/editbio", { bio: this.state.value }).then(({ data }) => {
+            console.log("data in postBio:", data);
+            // this.props.updateBio(data.data);
+            if (data) {
+                this.setState({
+                    editMode: "read",
+                });
+            }
+        });
+    }
+    editBio() {
+        this.setState({
+            editMode: "edit",
+        });
+    }
+
     render() {
         if (this.state.editMode === "read") {
-            return <h1>Sanity check: I am the Bio Editor!</h1>;
+            return (
+                <React.Fragment>
+                    <button onClick={() => this.toggleBio()}>Edit</button>
+                </React.Fragment>
+            );
         } else if (this.state.editMode === "edit") {
             return (
-                <div>
-                    <textarea defaultValue="hello :)"></textarea>
+                <React.Fragment>
+                    <textarea
+                        value={this.state.value}
+                        name="editbio"
+                        onChange={(e) => this.handleChange(e)}
+                        defaultValue={this.props.bio}
+                    ></textarea>
+                    <button onClick={(e) => this.postBio(e)}>Send</button>
+
                     {/* here in the default Value it could be the user's early Bio, do it adding props.bio */}
-                </div>
+                </React.Fragment>
+            );
+        } else {
+            return (
+                <React.Fragment>
+                    <textarea
+                        name="editbio"
+                        onChange={(e) => this.handleChange(e)}
+                        defaultValue="add Bio"
+                    ></textarea>
+                    <button onClick={(e) => this.editBio(e)}>Add</button>
+                </React.Fragment>
             );
         }
     }

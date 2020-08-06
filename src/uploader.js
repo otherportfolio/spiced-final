@@ -34,7 +34,7 @@ export default class Uploader extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <h1>Sanity check: uploader</h1>
+                {/* <h1>Sanity check: uploader</h1> */}
                 <div className="upload">
                     <input
                         onChange={(e) => this.handleChange(e)}

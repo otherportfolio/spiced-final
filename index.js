@@ -247,6 +247,20 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
 // ///////////// END OF MULTER - UPLOAD ///////////////
 // ////////////////////////////////////////////////////
 
+///////////// GET /editbio //////////////
+app.post("/editbio", (req, res) => {
+    console.log("hit /editbio route!");
+    console.log("input EditBio:", req.body);
+    db.addBio(req.session.user_Id, req.body.bio)
+        .then((results) => {
+            console.log("addBio rows[0]:", results.rows[0].bio);
+            res.json({ data: results.rows[0].bio });
+        })
+        .catch((err) => {
+            console.log("ERROR in editbio/addBio:", err);
+        });
+});
+
 ///// redirects that guarantee that if the user is logged out the url is /welcome /////
 app.get("*", function (req, res) {
     if (!req.session.user_Id) {

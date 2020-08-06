@@ -1,3 +1,8 @@
+* {
+    font-family: "Montserrat", sans-serif;
+    background-image: image("images/background.jpg");
+}
+
 #res_login {
     position: absolute;
     text-align: center;
@@ -22,16 +27,74 @@ h2 {
     top: 20%;
     left: 50%;
 }
-.presentational {
-    border: solid black;
-    display: flex;
-    flex-direction: column;
-    position: absolute;
+
+button {
+    line-height: 1.5rem;
     text-align: center;
-    top: 5%;
-    left: 70%;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    opacity: 2;
+}
+
+textarea {
+    line-height: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    opacity: 2;
+}
+
+.profile {
+    width: 100vw;
+    height: 100vh;
+    background-color: lightpink;
+    opacity: 10;
+    border: solid lightpink 2px;
+}
+.presentational {
+    border-radius: 50%;
+    position: absolute;
+    top: 2%;
+    left: 80%;
 }
 .profile_pic {
-    width: 200px;
-    height: 200px;
+    width: 50%;
+    height: 50%;
+    box-shadow: 5px 5px rgba(238, 119, 119, 0.653);
+    border-radius: 0;
+    border-radius: 1.5rem;
+}
+
+.upload {
+    position: absolute;
+    top: 20%;
+    left: 80%;
+    box-shadow: 5px 5px rgba(252, 240, 240, 0.653);
+    border-radius: 0;
+    border-radius: 1.5rem;
+    padding: 20px;
+}
+
+.user_profile {
+    position: absolute;
+    top: 40%;
+    right: 70%;
+}
+.profile_pic_bigger {
+    border: cornflowerblue solid 1px;
+    border-radius: 0;
+    border-radius: 0.5rem;
+    object-fit: cover;
+    width: 24rem;
+    transform: scale(1.1);
+    box-shadow: 5px 5px rgba(238, 119, 119, 0.653);
+}
+.user_infos {
+    border: cornflowerblue solid 1px;
+    border-radius: 0;
+    border-radius: 0.5rem;
+    transform: scale(1.1);
+    margin-top: 30px;
+    padding: 10px;
+    box-shadow: 5px 5px rgba(238, 119, 119, 0.653);
 }

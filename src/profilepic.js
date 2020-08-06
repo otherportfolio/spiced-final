@@ -2,7 +2,7 @@ import React from "react";
 
 export default function ProfilePic(props) {
     //here passing the props from App into Presentational
-    console.log("props in ProfilePic:", props);
+    // console.log("props in ProfilePic:", props);
     let url = url || "/images/default.png"; // imgUrl is = to imgUrl if it's defined if it's not (falsy) || serve "deafult.png"
     console.log("url:", url);
     //how to get information from App and also have here the props to show
@@ -17,7 +17,6 @@ export default function ProfilePic(props) {
                     src={props.url}
                     alt={props.first}
                 />
-                <p>ProfilePic.js </p>
                 <h3>
                     {props.first} {props.last}
                 </h3>

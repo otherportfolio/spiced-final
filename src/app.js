@@ -1,5 +1,4 @@
 import React from "react";
-import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
 import Profile from "./profile.js";
 import Logo from "./logo.js";
@@ -25,6 +24,12 @@ export default class App extends React.Component {
     }
 
     //comunicate with the server as soon as the App loads
+    //here contact the server using axios. (new get route on the server "/user")
+    // "/user" should look into the cookies & check for the user_Id
+    // THEN when we get the data back we want to add it to state...
+    // to put the Data got from the Server into "this.state={}" we need to use setState
+    // setState updates the state - attention setState is asynchronous - so for the console.log
+    // add a Callback so it waits for the "this.state" update
     componentDidMount() {
         console.log("App has mounted!!");
         axios.get("/user").then(({ data }) => {
@@ -36,23 +41,17 @@ export default class App extends React.Component {
                         last: data.last,
                         url: data.url,
                         id: data.id,
+                        bio: data.bio,
                     },
                     () => {
-                        console.log("this.state:", this.state);
+                        // console.log("this.state:", this.state);
                     }
                 );
             }
         });
-
-        //here contact the server using axios. (new get route on the server "/user")
-        // "/user" should look into the cookies & check for the user_Id
-        // THEN when we get the data back we want to add it to state...
-        // to put the Data gotten from the Server into "this.state={}" we need to use setState
-        // setState updates the state - attention setState is asynchronous - so for the console.log
-        // add a Callback so it waits for the "this.state" update
     }
 
-    //demo passing a Method to the child (Uploader)
+    //these functions are Methods living in App that will be passed to its children (Profile, Uploader. Logo)
     ProfilePic(pic) {
         console.log("ProfilePic:", pic);
         this.setState({
@@ -61,11 +60,16 @@ export default class App extends React.Component {
         });
     }
 
-    //this here work as a Method on the class
     toggleModal() {
         console.log("toggle Modal is running!");
         this.setState({
             uploaderIsVisible: !this.state.uploaderIsVisible,
+        });
+    }
+
+    bioUpdate(bio) {
+        this.setState({
+            bio: bio,
         });
     }
 
@@ -74,32 +78,24 @@ export default class App extends React.Component {
             //avoiding div suits
             <React.Fragment>
                 <Logo />
-                {/* Demo clickhandle to show the uploader function, on Click will call toggleModal */}
-                <h2
-                // onClick={() => {
-                //     this.toggleModal();
-                // }}
-                >
-                    Sanity check: App.js
-                </h2>
+                <h2>Sanity check: App.js</h2>
                 {/* "go find this.toggleModal in the Constructor" */}
-                {/* <p onClick={this.toggleModal}>Hello :)</p> */}
-                {/* a component inside App component */}
-                {/* here Presentational is a Child of App */}
-                {/* serving Presentational component the props from App */}
-                <ProfilePic
-                    toggleModal={(e) => {
-                        this.toggleModal(e);
-                    }}
+                {/* a component inside App component, here Profile is a Child of App.. */}
+                {/* ..serving Profile component the props from App */}
+
+                <Profile
                     first={this.state.first}
                     last={this.state.last}
                     url={this.state.url}
-
-                    // iAmAMethodInApp={this.iAmAMethodInApp} //passing the Method function here, so it becomes a props of Presentational, now Presentational can call that function
-                    //we should ALSO bind this one in the Constructor OR use a Callback function
-                    // we don't use "this.state" because the Method doesn't live inside "this.state"
+                    bio={this.state.bio}
+                    toggleModal={(e) => {
+                        this.toggleModal(e);
+                    }}
+                    bioUpdate={(e) => {
+                        this.bioUpdate();
+                    }}
                 />
-                {/* uploader is visible then show the following Component */}
+                {/* if uploader is visible show the Uploader Component */}
                 {this.state.uploaderIsVisible && (
                     <Uploader url={this.state.url} />
                 )}
