@@ -82,7 +82,7 @@ module.exports.searchUsers = (users) => {
             ILIKE $1
             OR last
             ILIKE $1`;
-    let params = [users + "%"];
+    let params = [`${users}%`];
     console.log("searchUsers query:", params);
     return db.query(q, params);
 };

@@ -4,9 +4,7 @@ import axios from "./axios_copy.js";
 export default function FindPeople() {
     const [userInput, setUserInput] = useState(" ");
     const [users, setUsers] = useState([]);
-    // console.log("users:", users);
-    // console.log("useState:", useState([]));
-    // const returnedArray = Array.from(users);
+
     console.log("users:", users);
 
     useEffect(() => {
@@ -28,7 +26,7 @@ export default function FindPeople() {
                 .get(`/search/${userInput}`)
                 .then(({ data }) => {
                     console.log(userInput);
-                    console.log("data in axios /search/userInput", data);
+                    // console.log("data in axios /search/userInput", data);
                     setUsers(data.data);
                 })
                 .catch((err) => {
@@ -37,8 +35,6 @@ export default function FindPeople() {
         } else {
             return;
         }
-
-        setUsers("");
     }, [userInput]);
 
     const handleChange = (e) => {
@@ -49,8 +45,9 @@ export default function FindPeople() {
         <React.Fragment>
             <div>
                 <input
+                    className="input_searchuser"
                     value={userInput}
-                    name="search"
+                    type="text"
                     onChange={handleChange}
                 />
             </div>
@@ -61,9 +58,9 @@ export default function FindPeople() {
                         return (
                             <div key={id} className="search_user">
                                 <ul>
-                                    <li>
+                                    <p>
                                         {user.first} {user.last}
-                                    </li>
+                                    </p>
                                 </ul>
                             </div>
                         );

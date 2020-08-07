@@ -308,7 +308,7 @@ app.get("/search/:userInput", (req, res) => {
                     "results in GET /search/${userInput}:",
                     results.rows
                 );
-                res.json(results.rows);
+                res.json({ data: results.rows });
             })
             .catch((err) => {
                 console.log("ERROR in GET /search/${userInput}:", err);
