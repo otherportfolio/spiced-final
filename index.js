@@ -162,8 +162,8 @@ app.post("/resetpassword", (req, res) => {
             let code = secretCode;
             let subj = "get the code";
             db.storeCode(email, code).then((results) => {
-                console.log("storeCode results:", results.rows[0].email);
-                console.log("storeCode results:", results.rows[0].code);
+                // console.log("storeCode results:", results.rows[0].email);
+                // console.log("storeCode results:", results.rows[0].code);
                 ses.sendEmail(email, code, subj).then(() => {
                     res.json({ sendEmailSuccess: true });
                 });
@@ -178,9 +178,9 @@ app.post("/submitcode", (req, res) => {
     let password = req.body.password;
     let neuCode = req.body.code;
     db.findCode(email).then((results) => {
-        console.log("Results in findCode:", results.rows[0].code);
-        console.log("Password in findCode:", password);
-        console.log("code check:", req.body.code, results.rows[0].code);
+        // console.log("Results in findCode:", results.rows[0].code);
+        // console.log("Password in findCode:", password);
+        // console.log("code check:", req.body.code, results.rows[0].code);
         if (req.body.code === results.rows[0].code) {
             console.log("getting here!");
             bc.hash(password)
@@ -206,10 +206,10 @@ app.post("/submitcode", (req, res) => {
 //todo://///////// GET /user //////////////
 
 app.get("/user", (req, res) => {
-    console.log("hit /user route!");
+    // console.log("hit /user route!");
     db.getUserInfo(req.session.user_Id)
         .then((results) => {
-            console.log("Results in getUserInfo:", results.rows[0]);
+            // console.log("Results in getUserInfo:", results.rows[0]);
             // res.json({ success: true });
             res.json(results.rows[0]);
         })
@@ -236,7 +236,7 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     //!insert the title, description, username and image url into the table
     db.addPicture(req.session.user_Id, url)
         .then((results) => {
-            console.log("addPicture rows[0]:", results.rows[0]);
+            // console.log("addPicture rows[0]:", results.rows[0]);
             res.json(results.rows[0]);
         })
         .catch((err) => {
@@ -247,11 +247,11 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
 
 //todo://///////// GET /editbio //////////////
 app.post("/editbio", (req, res) => {
-    console.log("hit /editbio route!");
-    console.log("input EditBio:", req.body);
+    // console.log("hit /editbio route!");
+    // console.log("input EditBio:", req.body);
     db.addBio(req.session.user_Id, req.body.bio)
         .then((results) => {
-            console.log("addBio rows[0]:", results.rows[0].bio);
+            // console.log("addBio rows[0]:", results.rows[0].bio);
             res.json({ data: results.rows[0].bio });
         })
         .catch((err) => {
@@ -261,28 +261,60 @@ app.post("/editbio", (req, res) => {
 
 //todo://///////// GET /user/ + id //////////////
 app.get("/user/:id.json", (req, res) => {
-    console.log("hit /user/ + id route!");
-    console.log("req.params", req.params);
-    console.log("req.session", req.session.user_Id);
+    // console.log("hit /user/ + id route!");
+    // console.log("req.params", req.params.id);
+    // console.log("req.session", req.session.user_Id);
     if (req.params.id == req.session.user_Id) {
         res.json({ sameId: true });
     } else {
         db.getUsersInfo(req.params.id)
             .then((results) => {
                 if (!results.rows[0]) {
-                    console.log(
-                        "results from GET /user/ +id:",
-                        results.rows[0].id
-                    );
-                    res.json({ sameId: true });
+                    // console.log(
+                    //     "results from GET /user/ +id:",
+                    //     results.rows[0].id
+                    // );
+                    res.json({ sameId: false });
                 } else {
                     res.json({ data: results.rows[0] });
                 }
             })
             .catch((err) => {
-                console.log("ERROR in GET /user/ +id::", err);
+                console.log("ERROR in GET /user/ + id:", err);
             });
     }
+});
+
+//todo://///////// GET /searchusers //////////////
+app.get("/searchusers", (req, res) => {
+    console.log("hit the /users route!");
+    db.getLastAddedUsers()
+        .then((results) => {
+            console.log("results in GET /searchusers:", results.rows);
+            res.json({ data: results.rows });
+        })
+        .catch((err) => {
+            console.log("ERROR in GET /searchusers:", err);
+        });
+});
+
+//todo://///////// GET //search/${userInput} //////////////
+app.get("/search/:userInput", (req, res) => {
+    console.log("params userInput:", req.params.userInput);
+    if (req.params.userInput) {
+        db.searchUsers(req.params.userInput)
+            .then((results) => {
+                console.log(
+                    "results in GET /search/${userInput}:",
+                    results.rows
+                );
+                res.json(results.rows);
+            })
+            .catch((err) => {
+                console.log("ERROR in GET /search/${userInput}:", err);
+            });
+    }
+    console.log("hit the /search/:userInput route!");
 });
 
 //todo://///////// GET /* //////////////

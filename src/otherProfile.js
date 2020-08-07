@@ -1,11 +1,7 @@
 import React from "react";
 import axios from "axios";
 
-let state = "user_Id";
-let title = "";
-let url = "/user/:id";
-
-class otherProfile extends React.Component {
+class OtherProfile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
@@ -16,7 +12,6 @@ class otherProfile extends React.Component {
         console.log("const id:", id);
         axios.get("/user/" + id + ".json").then(({ data }) => {
             console.log("data in otherProfile:", data);
-            // history.pushState({ state }, title, url);
             if (data.sameId) {
                 this.props.history.push("/");
             } else {
@@ -65,4 +60,4 @@ class otherProfile extends React.Component {
     }
 }
 
-export default otherProfile;
+export default OtherProfile;

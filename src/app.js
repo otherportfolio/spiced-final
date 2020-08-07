@@ -5,6 +5,7 @@ import Profile from "./profile.js";
 import Logo from "./logo.js";
 import axios from "./axios_copy.js";
 import OtherProfile from "./otherProfile.js";
+import FindPeople from "./findPeople";
 //! here component loading the users profile picture
 
 export default class App extends React.Component {
@@ -34,7 +35,7 @@ export default class App extends React.Component {
     componentDidMount() {
         console.log("App has mounted!!");
         axios.get("/user").then(({ data }) => {
-            console.log("data in App:", data);
+            // console.log("data in App:", data);
             if (data) {
                 this.setState(
                     {
@@ -120,6 +121,8 @@ export default class App extends React.Component {
                             />
                         )}
                     />
+
+                    <Route path="/findusers" component={FindPeople} />
                 </BrowserRouter>
             </React.Fragment>
         );

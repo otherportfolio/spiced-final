@@ -43,10 +43,11 @@ module.exports.addNewPassword = (email, hashedPw) => {
     return db.query(q, params);
 };
 
+//! GET /user Route
 module.exports.getUserInfo = (id) => {
     let q = "SELECT id, first, last, url, bio FROM users WHERE id = $1";
     let params = [id];
-    console.log("getUserInfo query:", params);
+    // console.log("getUserInfo query:", params);
     return db.query(q, params);
 };
 
@@ -62,9 +63,26 @@ module.exports.addBio = function (id, bio) {
     return db.query(q, params);
 };
 
+//! GET /user/ + id Route
 module.exports.getUsersInfo = (id) => {
     let q = "SELECT id, first, last, url, bio FROM users WHERE id = $1";
     let params = [id];
-    console.log("getUsersInfo query:", params);
+    // console.log("getUsersInfo query:", params);
+    return db.query(q, params);
+};
+
+//! getting the last 3 added users
+module.exports.getLastAddedUsers = () => {
+    let q = "SELECT * FROM users ORDER BY id DESC LIMIT 3";
+    return db.query(q);
+};
+
+module.exports.searchUsers = (users) => {
+    let q = `SELECT * FROM users WHERE first
+            ILIKE $1
+            OR last
+            ILIKE $1`;
+    let params = [users + "%"];
+    console.log("searchUsers query:", params);
     return db.query(q, params);
 };

@@ -98,3 +98,9 @@ textarea {
     padding: 10px;
     box-shadow: 5px 5px rgba(238, 119, 119, 0.653);
 }
+
+.search_user {
+    border: coral 2px solid;
+    width: 160px;
+    height: 20px;
+}
