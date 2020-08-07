@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "./axios_copy.js";
 
 export default function FindPeople() {
-    const [userInput, setUserInput] = useState(" ");
+    const [userInput, setUserInput] = useState("");
     const [users, setUsers] = useState([]);
 
     console.log("users:", users);
@@ -33,7 +33,7 @@ export default function FindPeople() {
                     console.log("ERROR in axios GET /search/userInput:", err);
                 });
         } else {
-            return;
+            return setUsers([]);
         }
     }, [userInput]);
 
@@ -57,11 +57,13 @@ export default function FindPeople() {
                     users.map((user, id) => {
                         return (
                             <div key={id} className="search_user">
-                                <ul>
-                                    <p>
-                                        {user.first} {user.last}
-                                    </p>
-                                </ul>
+                                <img
+                                    className="profile_pic_bigger"
+                                    src={user.url}
+                                />
+                                <p>
+                                    {user.first} {user.last}
+                                </p>
                             </div>
                         );
                     })}

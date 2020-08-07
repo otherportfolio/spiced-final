@@ -99,12 +99,16 @@ textarea {
     box-shadow: 5px 5px rgba(238, 119, 119, 0.653);
 }
 .input_searchuser {
-    margin-left: 20px;
-    padding-left: 0px;
+    position: absolute;
+    top: 30%;
+    right: 70%;
+}
+input[type="text" i] {
+    padding: 0px 0px;
 }
 
 .search_user {
-    border: coral 2px solid;
-    width: 160px;
-    margin-left: 20px;
+    position: absolute;
+    top: 40%;
+    right: 70%;
 }
