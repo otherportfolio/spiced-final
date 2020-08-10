@@ -13,7 +13,7 @@ export default function FindPeople() {
             .get("/searchusers")
             .then(({ data }) => {
                 console.log("data in findPeople:", data);
-                setUsers(data.data);
+                setUsers(data);
             })
             .catch((err) => {
                 console.log("ERROR in axios GET /searchusers:", err);
@@ -43,22 +43,17 @@ export default function FindPeople() {
 
     return (
         <React.Fragment>
-            <div>
-                <input
-                    className="input_searchuser"
-                    value={userInput}
-                    type="text"
-                    onChange={handleChange}
-                />
+            <div className="input_field">
+                <p>who else is here?</p>
+                <input value={userInput} type="text" onChange={handleChange} />
             </div>
-
-            <div>
+            <div className="user_search">
                 {users &&
                     users.map((user, id) => {
                         return (
-                            <div key={id} className="search_user">
+                            <div key={id}>
                                 <img
-                                    className="profile_pic_bigger"
+                                    className="profile_pic_search"
                                     src={user.url}
                                 />
                                 <p>

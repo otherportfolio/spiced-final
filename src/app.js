@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Link } from "react-router-dom";
 import Uploader from "./uploader";
 import Profile from "./profile.js";
 import Logo from "./logo.js";
@@ -77,19 +77,20 @@ export default class App extends React.Component {
 
     render() {
         return (
-            //avoiding div suits
+            //! avoiding div suits
             <React.Fragment>
                 <Logo />
-                <h2>Sanity check: App.js</h2>
-                {this.state.uploaderIsVisible && (
-                    <Uploader url={this.state.url} />
-                )}
+                {/* <h2>Sanity check: App.js</h2> */}
+
                 {/* //! "go find this.toggleModal in the Constructor" */}
                 {/* // ! a component inside App component, here Profile is a Child of App.. */}
                 {/* // ! ..serving Profile component the props from App */}
 
                 {/* //Todo ////////////////////// PART VI ///////////////////// */}
                 <BrowserRouter>
+                    {this.state.uploaderIsVisible && (
+                        <Uploader url={this.state.url} />
+                    )}
                     <div>
                         <Route
                             exact

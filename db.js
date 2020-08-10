@@ -83,6 +83,38 @@ module.exports.searchUsers = (users) => {
             OR last
             ILIKE $1`;
     let params = [`${users}%`];
-    console.log("searchUsers query:", params);
+    // console.log("searchUsers query:", params);
+    return db.query(q, params);
+};
+//todo://///////// ROUTE /user/${viewedId} //////////////
+module.exports.checkFriendship = (viewedId, viewerId) => {
+    let q = `SELECT * FROM friendships 
+    WHERE (sender_id=$2 AND recipient_id=$1) OR (sender_id=$1 AND recipient_id=$2)`;
+    let params = [viewedId, viewerId];
+    return db.query(q, params);
+};
+
+//todo://///////// GET /addfriend //////////////
+//! add row
+module.exports.addFriend = (sender_id, recipient_id) => {
+    let q = `INSERT INTO friendships (sender_id, recipient_id) VALUES ($1, $2) RETURNING *`;
+    let params = [sender_id, recipient_id];
+    console.log("addFriend query:", params);
+    return db.query(q, params);
+};
+
+//! update
+module.exports.updateFriendship = (sender_id, recipient_id) => {
+    let q = `UPDATE friendships SET accepted = true WHERE sender_id=$1 AND recipient_id=$2 RETURNING *`;
+    let params = [sender_id, recipient_id];
+    console.log("updateFriendship query:", params);
+    return db.query(q, params);
+};
+
+//! delete row
+module.exports.cancelFriend = (sender_id, recipient_id) => {
+    let q = `DELETE FROM friendships WHERE (sender_id=$2 AND recipient_id=$1) OR (sender_id=$1 AND recipient_id=$2)`;
+    let params = [sender_id, recipient_id];
+    console.log("cancelFriend query:", params);
     return db.query(q, params);
 };

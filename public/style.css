@@ -9,10 +9,26 @@
     top: 15%;
     left: 50%;
 }
+.nav-bar {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    size: 14px;
+    width: 400px;
+    top: 10%;
+    left: 60%;
+    font-size: 25px;
+}
+
+.header_logo {
+    background-color: #fff;
+}
 
 .logo {
     width: 200px;
     height: 200px;
+    margin-left: 60px;
 }
 h1 {
     position: absolute;
@@ -98,17 +114,29 @@ textarea {
     padding: 10px;
     box-shadow: 5px 5px rgba(238, 119, 119, 0.653);
 }
-.input_searchuser {
+
+.user_search {
     position: absolute;
+    display: flex;
+    flex-direction: row;
     top: 30%;
-    right: 70%;
+    left: 20%;
 }
-input[type="text" i] {
-    padding: 0px 0px;
+.profile_pic_search {
+    background-color: #fff;
+    border: cornflowerblue solid 1px;
+    border-radius: 0;
+    border-radius: 0.5rem;
+    object-fit: cover;
+    width: 430px;
+    height: 290px;
+    margin: 40px;
+    transform: scale(1.1);
+    box-shadow: 5px 5px rgba(238, 119, 119, 0.653);
 }
 
-.search_user {
+.input_field {
     position: absolute;
-    top: 40%;
-    right: 70%;
+    top: 20%;
+    left: 5%;
 }

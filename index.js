@@ -262,7 +262,7 @@ app.post("/editbio", (req, res) => {
 //todo://///////// GET /user/ + id //////////////
 app.get("/user/:id.json", (req, res) => {
     // console.log("hit /user/ + id route!");
-    // console.log("req.params", req.params.id);
+    console.log("req.params", req.params.id);
     // console.log("req.session", req.session.user_Id);
     if (req.params.id == req.session.user_Id) {
         res.json({ sameId: true });
@@ -276,7 +276,7 @@ app.get("/user/:id.json", (req, res) => {
                     // );
                     res.json({ sameId: false });
                 } else {
-                    res.json({ data: results.rows[0] });
+                    res.json(results.rows[0]);
                 }
             })
             .catch((err) => {
@@ -291,7 +291,7 @@ app.get("/searchusers", (req, res) => {
     db.getLastAddedUsers()
         .then((results) => {
             console.log("results in GET /searchusers:", results.rows);
-            res.json({ data: results.rows });
+            res.json(results.rows);
         })
         .catch((err) => {
             console.log("ERROR in GET /searchusers:", err);
@@ -308,13 +308,108 @@ app.get("/search/:userInput", (req, res) => {
                     "results in GET /search/${userInput}:",
                     results.rows
                 );
-                res.json({ data: results.rows });
+                res.json(results.rows);
             })
             .catch((err) => {
                 console.log("ERROR in GET /search/${userInput}:", err);
             });
     }
     console.log("hit the /search/:userInput route!");
+});
+
+//todo://///////// GET /user/${viewedId} //////////////
+app.get("/users/:viewedId", (req, res) => {
+    console.log("hit rout/users/:viewedId");
+    const viewerId = req.session.user_Id;
+    const viewedId = req.params.viewedId;
+    console.log("req.params:", req.params.viewedId);
+    // console.log("params:", typeof viewerId);
+    if (req.params.viewedId == req.session.user_Id) {
+        res.json({ sameId: true });
+    } else {
+        console.log("viewedId", viewedId);
+        console.log("viewerId", viewerId);
+        db.checkFriendship(viewedId, viewerId)
+            .then((results) => {
+                console.log(
+                    "RESULTS after query checkFriendship:",
+                    results.rows
+                );
+                //! there‘s no row
+                if (results.rows.length == 0) {
+                    res.json({
+                        button: "Add friend",
+                    });
+                    //! there‘s a row && accepted is true
+                } else if (results.rows && results.rows[0].accepted == true) {
+                    // console.log("results.rows[0]:", results.rows[0]);
+
+                    res.json({
+                        button: "cancel friend",
+                    });
+                    //! there‘s a row but accepted is false
+                } else if (results.rows && results.rows[0].accepted == false) {
+                    console.log("results.rows:", results.rows);
+                    if (req.params.viewedId == results.rows[0].sender_id) {
+                        res.json({
+                            button: "cancel request",
+                        });
+                    } else if (
+                        req.params.viewedId == results.rows[0].recipient_id
+                    ) {
+                        res.json({
+                            button: "accept request",
+                        });
+                    }
+                }
+            })
+            .catch((err) => {
+                console.log("ERROR in GET /search/${userInput}:", err);
+            });
+    }
+});
+
+//todo://///////// GET /addfriend //////////////
+app.post("/addfriend", (req, res) => {
+    console.log("hit rout/addfriend!");
+    const sender_id = req.session.user_Id;
+    console.log("req.session.user_Id:", req.session.user_Id);
+    const recipient_id = req.body.viewedId;
+    console.log("req.body:", req.body.viewedId);
+    if (req.body.button == "Add friend") {
+        //! add row
+        db.addFriend(sender_id, recipient_id)
+            .then(() => {
+                res.json({ success: true });
+            })
+            .catch((err) => {
+                console.log("ERROR in GET /addfriend:", err);
+            });
+    } else if (req.body.button == "accept request") {
+        //! update
+        db.updateFriendship(sender_id, recipient_id)
+            .then(() => {
+                res.json({ accepted: true });
+            })
+            .catch((err) => {
+                console.log("ERROR in GET /updateFriendship:", err);
+            });
+    } else if (req.body.button == "cancel friend") {
+        //! delete row
+        db.cancelFriend(sender_id, recipient_id)
+            .then(() => {
+                res.json({ accepted: false });
+            })
+            .catch((err) => {
+                console.log("ERROR in GET /cancelfriend:", err);
+            });
+    }
+});
+
+//todo: ////////// LOGOUT ///////////////
+app.get("/logout", (req, res) => {
+    req.session = null;
+    res.redirect("/");
 });
 
 //todo://///////// GET /* //////////////
