@@ -236,7 +236,7 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     //!insert the title, description, username and image url into the table
     db.addPicture(req.session.user_Id, url)
         .then((results) => {
-            // console.log("addPicture rows[0]:", results.rows[0]);
+            console.log("addPicture rows[0]:", results.rows[0]);
             res.json(results.rows[0]);
         })
         .catch((err) => {
@@ -371,11 +371,11 @@ app.get("/users/:viewedId", (req, res) => {
 
 //todo://///////// GET /addfriend //////////////
 app.post("/addfriend", (req, res) => {
-    console.log("hit rout/addfriend!");
+    // console.log("hit rout/addfriend!");
     const sender_id = req.session.user_Id;
-    console.log("req.session.user_Id:", req.session.user_Id);
+    // console.log("req.session.user_Id:", req.session.user_Id);
     const recipient_id = req.body.viewedId;
-    console.log("req.body:", req.body.viewedId);
+    // console.log("req.body:", req.body.viewedId);
     if (req.body.button == "Add friend") {
         //! add row
         db.addFriend(sender_id, recipient_id)
@@ -404,6 +404,48 @@ app.post("/addfriend", (req, res) => {
                 console.log("ERROR in GET /cancelfriend:", err);
             });
     }
+});
+
+//todo://///////// GET /friends-wannabes //////////////
+app.get("/friends-wannabes", (req, res) => {
+    console.log("hit /friends-wannabes route!");
+    console.log("req.session.user_Id:", req.session.user_Id);
+    db.getFriendsWannabes(req.session.user_Id)
+        .then((results) => {
+            console.log("results in GET friendswannabes:", results.rows);
+            res.json(results.rows);
+        })
+        .catch((err) => {
+            console.log("ERROR in GET /friends-wannabes:", err);
+        });
+});
+
+//todo://///////// POST /accept-friend //////////////
+app.post("/accept-friend", (req, res) => {
+    console.log("hit /accept-friend route!");
+    const sender_id = req.session.user_Id;
+    const recipient_id = req.body.friends_Id;
+    console.log("req.body.friends_Id:", recipient_id);
+    db.updateFriendship(sender_id, recipient_id)
+        .then((results) => {
+            res.json(results.rows);
+        })
+        .catch((err) => {
+            console.log("ERROR in POST /accept-friend:", err);
+        });
+});
+//todo://///////// POST /unfriend //////////////
+app.post("/unfriend", (req, res) => {
+    console.log("hit /unfriend route!");
+    const sender_id = req.session.user_Id;
+    const recipient_id = req.body.users_Id;
+    db.cancelFriend(sender_id, recipient_id)
+        .then((results) => {
+            res.json(results.rows);
+        })
+        .catch((err) => {
+            console.log("ERROR in POST /unfriend:", err);
+        });
 });
 
 //todo: ////////// LOGOUT ///////////////

@@ -2,7 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Link } from "react-router-dom";
 
-export default function Logo() {
+export default function Logo(props) {
+    console.log("props in Logo:", props);
     return (
         <div className="header_logo">
             {/* <h1>it worked!!</h1> */}
@@ -17,6 +18,17 @@ export default function Logo() {
                     <Link to="/logout">
                         <p>Logout</p>
                     </Link>
+                    {/* //! added later */}
+                    {/* <Link to="/"> */}
+                    {/* <ProfilePic
+                        first={props.first}
+                        last={props.last}
+                        // onClick={props.toggleModal}
+                        src={props.url}
+                        alt={props.first}
+                        className="profile_pic"
+                    /> */}
+                    {/* </Link> */}
                 </BrowserRouter>
             </div>
             <img className="logo" src="/images/default.png" alt="big image" />

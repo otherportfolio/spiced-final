@@ -5,7 +5,9 @@ import Profile from "./profile.js";
 import Logo from "./logo.js";
 import axios from "./axios_copy.js";
 import OtherProfile from "./otherProfile.js";
-import FindPeople from "./findPeople";
+import FindPeople from "./findPeople.js";
+import Friends from "./friends.js";
+
 //! here component loading the users profile picture
 
 export default class App extends React.Component {
@@ -81,11 +83,9 @@ export default class App extends React.Component {
             <React.Fragment>
                 <Logo />
                 {/* <h2>Sanity check: App.js</h2> */}
-
                 {/* //! "go find this.toggleModal in the Constructor" */}
                 {/* // ! a component inside App component, here Profile is a Child of App.. */}
                 {/* // ! ..serving Profile component the props from App */}
-
                 {/* //Todo ////////////////////// PART VI ///////////////////// */}
                 <BrowserRouter>
                     {this.state.uploaderIsVisible && (
@@ -122,6 +122,7 @@ export default class App extends React.Component {
                             />
                         )}
                     />
+                    <Route path="/friends" component={Friends} />
 
                     <Route path="/findusers" component={FindPeople} />
                 </BrowserRouter>

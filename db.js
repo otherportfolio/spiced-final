@@ -104,6 +104,7 @@ module.exports.addFriend = (sender_id, recipient_id) => {
 };
 
 //! update
+//! accept-friend
 module.exports.updateFriendship = (sender_id, recipient_id) => {
     let q = `UPDATE friendships SET accepted = true WHERE sender_id=$1 AND recipient_id=$2 RETURNING *`;
     let params = [sender_id, recipient_id];
@@ -112,9 +113,25 @@ module.exports.updateFriendship = (sender_id, recipient_id) => {
 };
 
 //! delete row
+//! unfriend
 module.exports.cancelFriend = (sender_id, recipient_id) => {
     let q = `DELETE FROM friendships WHERE (sender_id=$2 AND recipient_id=$1) OR (sender_id=$1 AND recipient_id=$2)`;
     let params = [sender_id, recipient_id];
     console.log("cancelFriend query:", params);
+    return db.query(q, params);
+};
+
+//! get friends & wannabe friends
+module.exports.getFriendsWannabes = (id) => {
+    let q = `
+  SELECT users.id, first, last, url, accepted
+  FROM friendships
+  JOIN users
+  ON (accepted = false AND recipient_id = $1 AND sender_id = users.id)
+  OR (accepted = true AND recipient_id = $1 AND sender_id = users.id)
+  OR (accepted = true AND sender_id = $1 AND recipient_id = users.id)
+`;
+    let params = [id];
+    console.log("getFriendsWannabes:", params);
     return db.query(q, params);
 };
