@@ -36,7 +36,7 @@ export default function (state = {}, action) {
         state = {
             ...state,
             friendsWannabes: state.friendsWannabes.filter((user) => {
-                if (user.id !== action.users_Id) {
+                if (user.id != action.users_Id) {
                     return {
                         ...user,
                         accepted: false,

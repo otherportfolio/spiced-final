@@ -31,7 +31,7 @@ export async function unfriend(users_Id) {
         console.log("data in /unfriend:", data);
         return {
             type: "UNFRIEND",
-            users_Id: data.users_Id,
+            users_Id,
         };
     });
     // .catch((err) => {

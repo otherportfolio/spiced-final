@@ -37,17 +37,17 @@ export default function Friends() {
             <div id="friends">
                 <div className="friend">
                     {friend &&
-                        friend.map((eachFriend, id) => {
+                        friend.map((user, id) => {
                             return (
                                 <div key={id}>
-                                    <img src={friend[0].url} />
+                                    <img src={user.url} />
                                     <p>
-                                        {friend.first}
-                                        {friend.last}
+                                        {user.first}
+                                        {user.last}
                                     </p>
                                     <button
                                         onClick={() =>
-                                            dispatch(unfriend(friend[0].id))
+                                            dispatch(unfriend(user.id))
                                         }
                                     >
                                         Cancel Friendship
@@ -61,10 +61,10 @@ export default function Friends() {
             <div id="wannabes">
                 <div className="notfriend">
                     {notfriend &&
-                        notfriend.map((eachnoFriend, id) => {
+                        notfriend.map((notfriend, id) => {
                             return (
                                 <div key={id}>
-                                    <img src={notfriend[0].url} />
+                                    <img src={notfriend.url} />
                                     <p>
                                         {notfriend.first}
                                         {notfriend.last}
@@ -73,7 +73,7 @@ export default function Friends() {
                                         onClick={() =>
                                             dispatch(
                                                 acceptFriendRequest(
-                                                    notfriend[0].id
+                                                    notfriend.id
                                                 )
                                             )
                                         }

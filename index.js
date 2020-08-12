@@ -412,7 +412,7 @@ app.get("/friends-wannabes", (req, res) => {
     console.log("req.session.user_Id:", req.session.user_Id);
     db.getFriendsWannabes(req.session.user_Id)
         .then((results) => {
-            console.log("results in GET friendswannabes:", results.rows);
+            console.log("results in GET friendswannabes:", results.rows[0]);
             res.json(results.rows);
         })
         .catch((err) => {

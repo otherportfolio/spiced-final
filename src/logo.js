@@ -9,15 +9,18 @@ export default function Logo(props) {
             {/* <h1>it worked!!</h1> */}
             <div className="nav-bar">
                 <BrowserRouter>
-                    <Link to="/">
+                    <a href="/">
                         <p>Profile</p>
-                    </Link>
-                    <Link to="/findusers">
+                    </a>
+                    <a href="/findusers">
                         <p>Find friends</p>
-                    </Link>
-                    <Link to="/logout">
+                    </a>
+
+                    {/* //! since logout isn‘t a component no need to use Link */}
+                    <a href="/logout">
                         <p>Logout</p>
-                    </Link>
+                    </a>
+
                     {/* //! added later */}
                     {/* <Link to="/"> */}
                     {/* <ProfilePic
