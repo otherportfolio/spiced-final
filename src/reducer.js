@@ -45,6 +45,15 @@ export default function (state = {}, action) {
             }),
         };
     }
+    if (action.type == "GETMESSAGES") {
+        // console.log("lastMessages in reducer:", state.lastSent);
+        state = { ...state, getMessages: action.lastSent };
+    }
+    if (action.type == "GETMESSAGE") {
+        // console.log("newMessages in reducer:", state.newMessages);
+        state = { ...state, getMessage: action.newMessages };
+    }
+
     // console.log("state:", state);
     return state;
 }

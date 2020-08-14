@@ -7,7 +7,8 @@ import axios from "./axios_copy.js";
 import OtherProfile from "./otherProfile.js";
 import FindPeople from "./findPeople.js";
 import Friends from "./friends.js";
-
+import chatMessages from "./chat.js";
+import ProfilePic from "./profilepic.js";
 //! here component loading the users profile picture
 
 export default class App extends React.Component {
@@ -79,19 +80,27 @@ export default class App extends React.Component {
 
     render() {
         return (
-            //! avoiding div suits
-            <React.Fragment>
-                <Logo />
-                {/* <h2>Sanity check: App.js</h2> */}
-                {/* //! "go find this.toggleModal in the Constructor" */}
-                {/* // ! a component inside App component, here Profile is a Child of App.. */}
-                {/* // ! ..serving Profile component the props from App */}
-                {/* //Todo ////////////////////// PART VI ///////////////////// */}
-                <BrowserRouter>
+            <BrowserRouter>
+                {/* //! avoiding div suits */}
+                <React.Fragment>
+                    <Logo />
+                    {/* <h2>Sanity check: App.js</h2> */}
+                    {/* //! "go find this.toggleModal in the Constructor" */}
+                    {/* // ! a component inside App component, here Profile is a Child of App.. */}
+                    {/* // ! ..serving Profile component the props from App */}
+                    {/* //Todo ////////////////////// PART VI ///////////////////// */}
+
                     {this.state.uploaderIsVisible && (
                         <Uploader url={this.state.url} />
                     )}
                     <div>
+                        <ProfilePic
+                            id={this.state.id}
+                            first={this.state.first}
+                            last={this.state.last}
+                            url={this.state.url}
+                        />
+
                         <Route
                             exact
                             path="/"
@@ -123,10 +132,10 @@ export default class App extends React.Component {
                         )}
                     />
                     <Route path="/friends" component={Friends} />
-
                     <Route path="/findusers" component={FindPeople} />
-                </BrowserRouter>
-            </React.Fragment>
+                    <Route path="/chat" component={chatMessages} />
+                </React.Fragment>
+            </BrowserRouter>
         );
     }
 }

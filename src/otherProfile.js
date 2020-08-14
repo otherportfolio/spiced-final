@@ -1,7 +1,6 @@
 import React from "react";
 import axios from "axios";
 import FriendButton from "./friendButton.js";
-import Logo from "./logo.js";
 
 class OtherProfile extends React.Component {
     constructor(props) {
@@ -35,14 +34,13 @@ class OtherProfile extends React.Component {
         return (
             <React.Fragment>
                 <div className="profile">
-                    {/* <Logo /> */}
-                    {/* <div className="presentational">
+                    <div className="presentational">
                         <img
                             className="profile_pic"
                             src={this.state.url}
                             alt={this.state.first}
                         />
-                    </div> */}
+                    </div>
                     <div className="user_profile">
                         <img
                             className="profile_pic_bigger"

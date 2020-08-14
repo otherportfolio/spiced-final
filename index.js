@@ -1,12 +1,14 @@
 const express = require("express");
 const app = express();
 const compression = require("compression");
+//todo: /////socket.io//////
+const server = require("http").Server(app);
+const io = require("socket.io")(server, { origins: "localhost:8080" });
+
 const db = require("./db.js");
 const bc = require("./bc.js");
-// const { COOKIE_SESSION } = require("./secrets.json");
 const cookieSession = require("cookie-session");
 const csurf = require("csurf");
-// const aws = require("aws-sdk");
 const cryptoRandomString = require("crypto-random-string");
 const ses = require("./ses.js");
 const s3 = require("./s3.js");
@@ -21,14 +23,26 @@ app.use(express.urlencoded({ extended: false }));
 //todo:/// express static - middleware: handling the files /////
 app.use(express.static("./public"));
 
-//todo://////// cookie-session middleware //////////
-app.use(
-    cookieSession({
-        secret: "all the secrets",
-        keys: ["secret keys"],
-        maxAge: 1000 * 60 * 60 * 24 * 14,
-    })
-);
+// //todo://////// cookie-session middleware socket integrated //////////
+const cookieSessionMiddleware = cookieSession({
+    secret: `I'm always angry.`,
+    maxAge: 1000 * 60 * 60 * 24 * 90,
+});
+
+// //todo://////// cookie-session middleware //////////
+// app.use(
+//     cookieSession({
+//         secret: "all the secrets",
+//         keys: ["secret keys"],
+//         maxAge: 1000 * 60 * 60 * 24 * 14,
+//     })
+// );
+
+//todo://////// middleware to put cookie in socket.io ////////////
+app.use(cookieSessionMiddleware);
+io.use(function (socket, next) {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
 
 //todo:///////// express.json - middleware: parsing json /////////////
 app.use(express.json());
@@ -448,6 +462,42 @@ app.post("/unfriend", (req, res) => {
         });
 });
 
+//todo: ///////// SOCKET.IO ///////////////
+io.on("connection", function (socket) {
+    console.log(`socket with the id ${socket.id} is now CONNECTED`);
+    const { user_Id } = socket.request.session;
+    console.log("socket.session:", user_Id);
+    if (!user_Id) {
+        return socket.disconnect();
+    }
+    db.getLastMessages()
+        .then((results) => {
+            console.log("results in getLastMessages:", results.rows);
+            let msgs = results.rows;
+            console.log("msgs:", msgs);
+            socket.emit("getMessages", msgs);
+        })
+        .catch((err) => {
+            console.log("ERROR in getMessages:", err);
+        });
+
+    socket.on("getMessage", (msg) => {
+        console.log("getMessages hit!");
+        db.newChatMessage(user_Id, msg).then((results) => {
+            let newMessage = results.rows[0].id;
+            console.log("newMessage:", newMessage);
+            db.getChatMessages(newMessage)
+                .then((rows) => {
+                    console.log("rows in getChatMessages:", rows);
+                    io.emit("newMessage", rows);
+                })
+                .catch((err) => {
+                    console.log("ERROR in getMessage:", err);
+                });
+        });
+    });
+});
+
 //todo: ////////// LOGOUT ///////////////
 app.get("/logout", (req, res) => {
     req.session = null;
@@ -465,6 +515,11 @@ app.get("*", function (req, res) {
     }
 });
 
-app.listen(8080, function () {
+//todo: ///// listening through the socket ///////
+server.listen(8080, function () {
     console.log("I'm listening.");
 });
+
+// app.listen(8080, function () {
+//     console.log("I'm listening.");
+// });

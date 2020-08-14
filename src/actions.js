@@ -8,9 +8,6 @@ export async function receiveFriendsWannabes() {
             friendsWannabes: data.data,
         };
     });
-    // .catch((err) => {
-    //     console.log("ERROR in actions - GET /friends-wannabes:", err);
-    // });
 }
 
 export async function acceptFriendRequest(friends_Id) {
@@ -21,9 +18,6 @@ export async function acceptFriendRequest(friends_Id) {
             friends_Id: data.friends_Id,
         };
     });
-    // .catch((err) => {
-    //     console.log("ERROR in actions - POST /accept-friend:", err);
-    // });
 }
 
 export async function unfriend(users_Id) {
@@ -34,7 +28,19 @@ export async function unfriend(users_Id) {
             users_Id,
         };
     });
-    // .catch((err) => {
-    //     console.log("ERROR in actions - POST /unfriend:", err);
-    // });
+}
+export async function getMessages(msgs) {
+    console.log("data in actions.js /getMessages:", msgs);
+    return {
+        type: "GETMESSAGES",
+        lastSent: msgs,
+    };
+}
+
+export async function getMessage(msg) {
+    console.log("data in actions.js /getMessage:", msg);
+    return {
+        type: "GETMESSAGE",
+        newMessages: msg,
+    };
 }

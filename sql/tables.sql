@@ -11,7 +11,7 @@ CREATE TABLE users(
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
 
-      CREATE TABLE password_reset_codes(
+CREATE TABLE password_reset_codes(
     id SERIAL PRIMARY KEY,
     email VARCHAR,
     code VARCHAR(6),
@@ -23,4 +23,9 @@ CREATE TABLE friendships( id SERIAL PRIMARY KEY,
      recipient_id INT REFERENCES users(id) NOT NULL,
      accepted BOOLEAN DEFAULT false);
 
-     
+CREATE TABLE chat_messages(
+    id SERIAL PRIMARY KEY,
+    message VARCHAR NOT NULL CHECK (message <> ''),
+    sender_id INT NOT NULL REFERENCES users(id),
+    ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

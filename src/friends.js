@@ -40,7 +40,11 @@ export default function Friends() {
                         friend.map((user, id) => {
                             return (
                                 <div key={id}>
-                                    <img src={user.url} />
+                                    <p>my friends</p>
+                                    <img
+                                        className="profile_pic_bigger"
+                                        src={user.url}
+                                    />
                                     <p>
                                         {user.first}
                                         {user.last}
@@ -56,15 +60,17 @@ export default function Friends() {
                             );
                         })}
                 </div>
-            </div>
 
-            <div id="wannabes">
                 <div className="notfriend">
                     {notfriend &&
                         notfriend.map((notfriend, id) => {
                             return (
                                 <div key={id}>
-                                    <img src={notfriend.url} />
+                                    <p>my soon-to-be friends</p>
+                                    <img
+                                        className="profile_pic_bigger"
+                                        src={notfriend.url}
+                                    />
                                     <p>
                                         {notfriend.first}
                                         {notfriend.last}
