@@ -275,7 +275,7 @@ app.post("/editbio", (req, res) => {
 
 //todo://///////// GET /user/ + id //////////////
 app.get("/user/:id.json", (req, res) => {
-    // console.log("hit /user/ + id route!");
+    console.log("hit /user/ + id route!");
     console.log("req.params", req.params.id);
     // console.log("req.session", req.session.user_Id);
     if (req.params.id == req.session.user_Id) {
@@ -495,6 +495,47 @@ io.on("connection", function (socket) {
                     console.log("ERROR in getMessage:", err);
                 });
         });
+    });
+});
+
+//todo: ////////// GET /feed ///////////////
+app.get("/feed/:viewedId", (req, res) => {
+    console.log("hit the feed route!");
+    db.checkFriendship(req.params.viewedId, req.session.user_Id).then(
+        (results) => {
+            if (results.rows[0].accepted == true) {
+                db.getLastPosts(req.params.viewedId)
+                    .then((results) => {
+                        console.log("Results in getLastPosts:", results.rows);
+                        res.json(results.rows);
+                    })
+                    .catch((err) => {
+                        console.log("ERROR in getLastPosts:", err);
+                    });
+            }
+        }
+    );
+});
+
+//todo: //////////POST /newpost ///////////////
+app.post("/newpost", (req, res) => {
+    console.log("hit the newpost route!");
+    const sender_id = req.session.user_Id;
+
+    const recipient_id = req.body.viewedId;
+    console.log("sender_id:", sender_id);
+    console.log("recipient_id:", recipient_id);
+    db.postToFeed(sender_id, recipient_id, req.body.content).then((results) => {
+        let newPost = results.rows[0];
+        console.log("newPost:", newPost);
+        db.getNewPost(newPost)
+            .then((rows) => {
+                console.log("ROWS in postToFeed:", rows);
+                res.json(rows);
+            })
+            .catch((err) => {
+                console.log("ERROR in getNewPost:", err);
+            });
     });
 });
 

@@ -6,6 +6,7 @@ import {
     acceptFriendRequest,
     unfriend,
 } from "./actions.js";
+import { Link } from "react-router-dom";
 
 export default function Friends() {
     const dispatch = useDispatch();
@@ -33,44 +34,41 @@ export default function Friends() {
 
     return (
         <React.Fragment>
-            <h3>Sanity check: friends.js</h3>
+            {/* <h3>Sanity check: friends.js</h3> */}
             <div id="friends">
-                <div className="friend">
+                <div>
                     {friend &&
                         friend.map((user, id) => {
                             return (
-                                <div key={id}>
-                                    <p>my friends</p>
-                                    <img
-                                        className="profile_pic_bigger"
-                                        src={user.url}
-                                    />
+                                <div className="friend" key={id}>
+                                    <Link to={`/user/${user.id}`} key={id}>
+                                        <p>my friends</p>
+                                        <img src={user.url} />
+                                    </Link>
                                     <p>
-                                        {user.first}
-                                        {user.last}
+                                        {user.first} {user.last}
                                     </p>
                                     <button
                                         onClick={() =>
                                             dispatch(unfriend(user.id))
                                         }
                                     >
-                                        Cancel Friendship
+                                        <p>Cancel Friendship</p>
                                     </button>
                                 </div>
                             );
                         })}
                 </div>
 
-                <div className="notfriend">
+                <div>
                     {notfriend &&
                         notfriend.map((notfriend, id) => {
                             return (
-                                <div key={id}>
-                                    <p>my soon-to-be friends</p>
-                                    <img
-                                        className="profile_pic_bigger"
-                                        src={notfriend.url}
-                                    />
+                                <div className="friend" key={id}>
+                                    <Link to={`/user/${notfriend.id}`} key={id}>
+                                        <p>my soon-to-be friends</p>
+                                        <img src={notfriend.url} />
+                                    </Link>
                                     <p>
                                         {notfriend.first}
                                         {notfriend.last}
@@ -84,7 +82,7 @@ export default function Friends() {
                                             )
                                         }
                                     >
-                                        Accept Friendship
+                                        <p>Accept Friendship</p>
                                     </button>
                                 </div>
                             );

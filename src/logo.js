@@ -1,7 +1,5 @@
-import React, { Fragment } from "react";
-import ReactDOM from "react-dom";
-import { BrowserRouter, Route, Link } from "react-router-dom";
-import ProfilePic from "./profilepic.js";
+import React from "react";
+import { BrowserRouter } from "react-router-dom";
 
 export default function Logo(props) {
     console.log("props in Logo:", props);
@@ -20,30 +18,14 @@ export default function Logo(props) {
                         <a href="/findusers">
                             <p>Find friends</p>
                         </a>
+                        <a href="/chat">
+                            <p>Chatroom</p>
+                        </a>
 
                         {/* //! since logout isn‘t a component no need to use Link */}
                         <a href="/logout">
                             <p>Logout</p>
                         </a>
-
-                        {/* //! added later */}
-
-                        <ProfilePic
-                            toggleModal={(e) => {
-                                props.toggleModal(e);
-                            }}
-                            url={props.url}
-                        />
-                        <div className="presentational">
-                            <img
-                                className="profile_pic"
-                                onClick={() => {
-                                    props.toggleModal();
-                                }}
-                                src={props.url}
-                                alt={props.first}
-                            />
-                        </div>
                     </BrowserRouter>
                 </div>
                 <img

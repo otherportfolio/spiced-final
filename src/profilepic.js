@@ -18,9 +18,9 @@ export default function ProfilePic(props) {
                     src={url}
                     alt={first}
                 />
-                <h3>
+                {/* <h3>
                     {first} {last}
-                </h3>
+                </h3> */}
             </div>
         </React.Fragment>
     );

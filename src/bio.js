@@ -70,8 +70,9 @@ class BioEditor extends React.Component {
                         onChange={(e) => this.handleChange(e)}
                         defaultValue={this.props.bio}
                     ></textarea>
-                    <button onClick={(e) => this.postBio(e)}>Send</button>
                     <br></br>
+                    <br></br>
+                    <button onClick={(e) => this.postBio(e)}>Send</button>
                     <button onClick={() => this.doNothing()}>Cancel</button>
 
                     {/* //! here in the default Value it could be the user's early Bio, do it adding props.bio */}

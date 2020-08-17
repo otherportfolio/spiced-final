@@ -9,6 +9,7 @@ import FindPeople from "./findPeople.js";
 import Friends from "./friends.js";
 import chatMessages from "./chat.js";
 import ProfilePic from "./profilepic.js";
+import AppFeed from "./feed.js";
 //! here component loading the users profile picture
 
 export default class App extends React.Component {
@@ -18,7 +19,7 @@ export default class App extends React.Component {
             uploaderIsVisible: false, //! setting the Uploader to true
         };
         this.toggleModal = this.toggleModal.bind(this); //! binding "this" to the function here so we can use it later in the component
-        this.userPicture = this.ProfilePic.bind(this);
+        // this.userPicture = this.ProfilePic.bind(this);
     }
 
     handleChange(e) {
@@ -52,6 +53,8 @@ export default class App extends React.Component {
                         // console.log("this.state:", this.state);
                     }
                 );
+            } else {
+                this.props.history.push("/");
             }
         });
     }
@@ -134,6 +137,7 @@ export default class App extends React.Component {
                     <Route path="/friends" component={Friends} />
                     <Route path="/findusers" component={FindPeople} />
                     <Route path="/chat" component={chatMessages} />
+                    <Route path="/feed" component={AppFeed} />
                 </React.Fragment>
             </BrowserRouter>
         );

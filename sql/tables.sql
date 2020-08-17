@@ -29,3 +29,11 @@ CREATE TABLE chat_messages(
     sender_id INT NOT NULL REFERENCES users(id),
     ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE feed(
+    id SERIAL PRIMARY KEY,
+    content VARCHAR NOT NULL CHECK (content <> ''),
+    sender_id INT NOT NULL REFERENCES users(id),
+    recipient_id INT REFERENCES users(id) NOT NULL,
+    ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

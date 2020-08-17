@@ -8,14 +8,10 @@ export default function chatMessages() {
     const chat = useSelector((state) => state.getMessages);
     console.log("chat:", chat);
 
-    // useEffect(() => {
-    //     console.log("ChatMessage did mount!");
-    // }, [chat]);
-
     return (
         <React.Fragment>
             <div className="chat_parent">
-                <h1>Sanity check: Chat.js!</h1>
+                {/* <h1>Sanity check: Chat.js!</h1> */}
                 <div>
                     {chat &&
                         chat.map((user, id) => {
@@ -40,7 +36,11 @@ export default function chatMessages() {
                         className="chat_textarea"
                         onChange={(e) => setMessage(e.target.value)}
                     ></textarea>
-                    <button onClick={() => socket.emit("getMessage", message)}>
+                    <button
+                        className="chat_button"
+                        chat_textarea
+                        onClick={() => socket.emit("getMessage", message)}
+                    >
                         Send
                     </button>
                 </div>

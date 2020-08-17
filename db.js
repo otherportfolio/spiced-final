@@ -67,7 +67,7 @@ module.exports.addBio = function (id, bio) {
 module.exports.getUsersInfo = (id) => {
     let q = "SELECT id, first, last, url, bio FROM users WHERE id = $1";
     let params = [id];
-    // console.log("getUsersInfo query:", params);
+    console.log("getUsersInfo query:", params);
     return db.query(q, params);
 };
 
@@ -136,6 +136,8 @@ module.exports.getFriendsWannabes = (id) => {
     return db.query(q, params);
 };
 
+//todo://///////// CHAT //////////////
+
 module.exports.getLastMessages = () => {
     let q = `SELECT first, last, url, sender_id, message FROM users 
     JOIN chat_messages ON users.id = chat_messages.sender_id 
@@ -157,5 +159,23 @@ module.exports.getChatMessages = (newMessage) => {
     WHERE chat_messages.id=$1`;
     let params = [newMessage];
     console.log("getChatMessages:", params);
+    return db.query(q, params);
+};
+
+//todo://///////// FEED //////////////
+module.exports.getLastPosts = (viewedId) => {
+    let q = `SELECT first, last, url, sender_id, content,ts FROM users 
+    JOIN feed ON users.id = feed.sender_id WHERE feed.recipient_id =$1
+    ORDER BY feed.id 
+    DESC LIMIT 10`;
+    let params = [viewedId];
+    console.log("getLastPosts:", params);
+    return db.query(q, params);
+};
+
+module.exports.postToFeed = (sender_id, recipient_id, newPost) => {
+    let q = `INSERT INTO feed (sender_id, recipient_id, content) VALUES ($1, $2, $3) RETURNING *`;
+    let params = [sender_id, recipient_id, newPost];
+    console.log("postToFeed:", params);
     return db.query(q, params);
 };

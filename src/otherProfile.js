@@ -1,17 +1,20 @@
 import React from "react";
 import axios from "axios";
 import FriendButton from "./friendButton.js";
+import AppFeed from "./feed.js";
 
 class OtherProfile extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            id: this.props.match.params.id,
+        };
     }
 
     componentDidMount() {
-        const id = this.props.match.params.id;
-        console.log("const id:", id);
-        axios.get("/user/" + id + ".json").then(({ data }) => {
+        // const id = this.props.match.params.id;
+        console.log("const id:", this.state.id);
+        axios.get("/user/" + this.state.id + ".json").then(({ data }) => {
             console.log("data in otherProfile:", data);
             if (data.sameId) {
                 this.props.history.push("/");
@@ -31,31 +34,26 @@ class OtherProfile extends React.Component {
         });
     }
     render() {
+        let url = this.state.url || "images/default.png";
+        console.log("url otherProfile:", url);
         return (
             <React.Fragment>
                 <div className="profile">
-                    <div className="presentational">
-                        <img
-                            className="profile_pic"
-                            src={this.state.url}
-                            alt={this.state.first}
-                        />
-                    </div>
                     <div className="user_profile">
-                        <img
-                            className="profile_pic_bigger"
-                            src={this.state.url}
-                        />
                         <div className="user_infos">
-                            {" "}
+                            <img src={url} />
                             <h3>
+                                <br></br>
+                                HI there! I‘m <br></br>
                                 {this.state.first} {this.state.last}
+                                <br></br>
+                                {this.state.bio}
                             </h3>
-                            <h3>{this.state.bio}</h3>
-                            <p></p>
+                            <FriendButton
+                                viewedId={this.props.match.params.id}
+                            />
                         </div>
-                        <p></p>
-                        <FriendButton viewedId={this.props.match.params.id} />
+                        <AppFeed viewedId={this.props.match.params.id} />
                     </div>
                 </div>
             </React.Fragment>
