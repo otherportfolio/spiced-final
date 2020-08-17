@@ -503,6 +503,7 @@ app.get("/feed/:viewedId", (req, res) => {
     console.log("hit the feed route!");
     db.checkFriendship(req.params.viewedId, req.session.user_Id).then(
         (results) => {
+            console.log("Results in checkFriendship:", results.rows[0]);
             if (results.rows[0].accepted == true) {
                 db.getLastPosts(req.params.viewedId)
                     .then((results) => {

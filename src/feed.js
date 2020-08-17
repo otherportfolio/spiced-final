@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "./axios_copy.js";
+import { render } from "react-dom";
 
 export default function AppFeed(props) {
     const [content, setUserContent] = useState("");
