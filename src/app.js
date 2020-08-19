@@ -10,6 +10,8 @@ import Friends from "./friends.js";
 import chatMessages from "./chat.js";
 import ProfilePic from "./profilepic.js";
 import AppFeed from "./feed.js";
+import Article from "./article.js";
+
 //! here component loading the users profile picture
 
 export default class App extends React.Component {
@@ -97,12 +99,12 @@ export default class App extends React.Component {
                         <Uploader url={this.state.url} />
                     )}
                     <div>
-                        <ProfilePic
+                        {/* <ProfilePic
                             id={this.state.id}
                             first={this.state.first}
                             last={this.state.last}
                             url={this.state.url}
-                        />
+                        /> */}
 
                         <Route
                             exact
@@ -138,6 +140,7 @@ export default class App extends React.Component {
                     <Route path="/findusers" component={FindPeople} />
                     <Route path="/chat" component={chatMessages} />
                     <Route path="/feed" component={AppFeed} />
+                    <Route path="/article" component={Article} />
                 </React.Fragment>
             </BrowserRouter>
         );

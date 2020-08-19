@@ -17,17 +17,34 @@ main {
     top: 15%;
     left: 50%;
 }
+/*//! NAV-BAR //*/
 .nav-bar {
-    position: absolute;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    /* size: 25px; */
-    /* width: 670px; */
-    top: 9%;
-    left: 70%;
-    right: 5%;
+    width: 1775px;
+    height: 126px;
+    object-fit: contain;
 }
+
+.nav-bar-rec {
+    width: 257px;
+    height: 63px;
+    border: solid 3px #000000;
+    background-color: #ffffff;
+}
+
+.nav-bar-rec > h2 {
+    width: 106px;
+    height: 38px;
+    font-family: PTSans;
+    font-size: 32px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.31;
+    letter-spacing: normal;
+    text-align: left;
+    color: #000000;
+}
+
 a > h2 {
     font-size: 30px;
     padding: 3% 0%;
@@ -36,7 +53,6 @@ a > h2 {
 
 .header_logo {
     background-color: #fff;
-    border-block-end: solid 5px black;
 }
 
 .logo {

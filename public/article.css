@@ -1,0 +1,129 @@
+.article_parent {
+    width: 100%;
+    height: 70%;
+    padding-left: 3%;
+}
+.article_title {
+    margin-top: 10%;
+    width: 526px;
+    height: 62px;
+    object-fit: contain;
+    font-family: Humanist521BT-Bold;
+    font-size: 51px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 0.86;
+    letter-spacing: normal;
+    text-align: left;
+    color: #000000;
+}
+.article_subline {
+    padding-top: 2%;
+    width: 1434px;
+    height: 32px;
+    object-fit: contain;
+    font-family: Humanist521BT-Roman;
+    font-size: 27px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.63;
+    letter-spacing: normal;
+    text-align: left;
+    color: #000000;
+}
+.article-line {
+    padding-top: 2%;
+    width: 1415px;
+    height: 0;
+    border: solid 3px #2ba448;
+}
+.article_author {
+    padding-top: 2%;
+    width: 177px;
+    height: 32px;
+    object-fit: contain;
+    font-family: Humanist521BT-Roman;
+    font-size: 27px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.63;
+    letter-spacing: normal;
+    text-align: left;
+    color: #000000;
+}
+.article_intro {
+    padding-top: 2%;
+    width: 1414px;
+    height: 89px;
+    -webkit-text-stroke: 1px #707070;
+    font-family: Palatino;
+    font-size: 23px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: italic;
+    line-height: 1.78;
+    letter-spacing: normal;
+    text-align: left;
+    color: #000000;
+}
+.article_main {
+    padding-top: 2%;
+    width: 1434px;
+    height: 3776.9px;
+    object-fit: contain;
+    -webkit-text-stroke: 1px #707070;
+    font-family: Palatino-Roman;
+    font-size: 23px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.91;
+    letter-spacing: normal;
+    text-align: left;
+    color: #000000;
+}
+
+.article_main .text-style-1 {
+    font-family: Humanist521BT-Bold;
+    font-size: 97px;
+    font-weight: bold;
+    color: #2ba448;
+}
+
+.article_main .text-style-2 {
+    font-family: Palatino;
+    font-weight: bold;
+}
+
+.article_endnotes {
+    width: 1633px;
+    height: 956px;
+    -webkit-text-stroke: 1px #707070;
+    font-family: Palatino-Roman;
+    font-size: 20px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 2.93;
+    letter-spacing: normal;
+    text-align: left;
+    color: #000000;
+}
+
+.article_byline {
+    width: 915px;
+    height: 268px;
+    -webkit-text-stroke: 1px #707070;
+    font-family: Palatino-Roman;
+    font-size: 23px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.91;
+    letter-spacing: normal;
+    text-align: left;
+    color: #000000;
+}

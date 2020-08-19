@@ -1,7 +1,7 @@
 const spicedPg = require("spiced-pg");
 const db = spicedPg(
     process.env.DATABASE_URL ||
-        "postgres:postgres:Hoda@localhost:5432/caper-socialnetwork"
+        "postgres:postgres:Hoda@localhost:5432/spiced-final"
 );
 
 module.exports.addRegister = (first, last, email, hashedPw) => {
@@ -178,4 +178,9 @@ module.exports.postToFeed = (sender_id, recipient_id, newPost) => {
     let params = [sender_id, recipient_id, newPost];
     console.log("postToFeed:", params);
     return db.query(q, params);
+};
+
+module.exports.getArticle = () => {
+    let q = `SELECT * FROM article`;
+    return db.query(q);
 };

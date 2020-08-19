@@ -499,7 +499,7 @@ io.on("connection", function (socket) {
 });
 
 //todo: ////////// GET /feed ///////////////
-app.get("/feed/:viewedId", (req, res) => {
+app.get("/api/feed/:viewedId", (req, res) => {
     console.log("hit the feed route!");
     db.checkFriendship(req.params.viewedId, req.session.user_Id).then(
         (results) => {
@@ -538,6 +538,19 @@ app.post("/newpost", (req, res) => {
                 console.log("ERROR in getNewPost:", err);
             });
     });
+});
+
+//todo: ////////// GET /article ///////////////
+app.get("/api/article", (req, res) => {
+    console.log("hit the article route!");
+    db.getArticle()
+        .then((results) => {
+            console.log("results in getArticle", results);
+            res.json(results.rows);
+        })
+        .catch((err) => {
+            console.log("ERROR in getArticles:", err);
+        });
 });
 
 //todo: ////////// LOGOUT ///////////////
