@@ -11,6 +11,8 @@ import chatMessages from "./chat.js";
 import ProfilePic from "./profilepic.js";
 import AppFeed from "./feed.js";
 import Article from "./article.js";
+import SideMenu from "./sidemenu";
+import Modal from "./modal.js";
 
 //! here component loading the users profile picture
 
@@ -140,7 +142,17 @@ export default class App extends React.Component {
                     <Route path="/findusers" component={FindPeople} />
                     <Route path="/chat" component={chatMessages} />
                     <Route path="/feed" component={AppFeed} />
-                    <Route path="/article" component={Article} />
+                    <Route path="/article/:article_id" component={Article} />
+                    <Route path="/sidemenu" component={SideMenu} />
+                    <Route
+                        path="/modal/:article_id/:word"
+                        render={(props) => (
+                            <Modal
+                                match={props.match}
+                                history={props.history}
+                            />
+                        )}
+                    />
                 </React.Fragment>
             </BrowserRouter>
         );

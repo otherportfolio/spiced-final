@@ -545,11 +545,38 @@ app.get("/api/article", (req, res) => {
     console.log("hit the article route!");
     db.getArticle()
         .then((results) => {
-            console.log("results in getArticle", results);
+            console.log("results in getArticle", results.rows[0].word);
             res.json(results.rows);
         })
         .catch((err) => {
             console.log("ERROR in getArticles:", err);
+        });
+});
+
+//todo: ////////// /modal /////////////
+app.get("/api/modal/:article_id/:word", (req, res) => {
+    console.log("hit the modal route!");
+    console.log("req.params:", req.params.article_id, req.params.word);
+    db.getMedia(req.params.article_id, req.params.word)
+        .then((results) => {
+            console.log("results in getMedia:", results);
+            res.json(results.rows[0]);
+        })
+        .catch((err) => {
+            console.log("ERROR in getMedia:", err);
+        });
+});
+
+//todo: ////////// /sidemenu /////////////
+app.get("/api/sidemenu", (req, res) => {
+    console.log("hit the sidemenu route!");
+    db.getSideMenu()
+        .then((results) => {
+            console.log("results in getSideMenu:", results);
+            res.json(results.rows);
+        })
+        .catch((err) => {
+            console.log("ERROR in getSideMenu:", err);
         });
 });
 

@@ -181,6 +181,20 @@ module.exports.postToFeed = (sender_id, recipient_id, newPost) => {
 };
 
 module.exports.getArticle = () => {
-    let q = `SELECT * FROM article`;
+    let q = `SELECT * FROM article JOIN media ON article.id = media.article_id`;
+    // let params = [];
+    // console.log("getArticle:", params);
+    return db.query(q);
+};
+
+module.exports.getMedia = (article_id, word) => {
+    let q = `SELECT article_id, word FROM media WHERE article_id =$1 AND word=$2`;
+    let params = [article_id, word];
+    console.log("getMedia:", params);
+    return db.query(q, params);
+};
+
+module.exports.getSideMenu = () => {
+    let q = `SELECT * FROM issues`;
     return db.query(q);
 };
