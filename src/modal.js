@@ -11,7 +11,7 @@ export default function Modal(props) {
 
     useEffect(() => {
         console.log("Modal mounted!!");
-        axios.get(`/api/modal/${article_id} / ${word}`).then(({ data }) => {
+        axios.get(`/api/modal/${article_id}/${word}`).then(({ data }) => {
             console.log("data in Modal:", data);
             setMedia(data);
         });
