@@ -4,31 +4,40 @@ import Modal from "./modal.js";
 
 export default function Article(props) {
     const [article, setArticle] = useState([]);
-    const [words, setWords] = useState({});
+    const [words, setWords] = useState([]);
     const [modal, setModal] = useState(false);
     const [modalid, setId] = useState("");
-    const [word, setWord] = useState("");
     console.log("modal:", modal);
+    console.log("modalid:", modalid);
     const article_id = props.match.params.article_id;
     console.log("article_id:", article_id);
-    console.log("word:", word);
 
     useEffect(() => {
         console.log("Article mounted!!");
         axios.get("/api/article").then(({ data }) => {
             console.log("results data in Article:", data);
 
-            const dangerousHtml = {
-                __html:
-                    data[0].byline &&
-                    data[0].byline.replace(
-                        "tryniti",
-                        "<span id='trinity'>tryniti<span/>"
-                    ),
-            };
+            const dangerousHtml = [
+                {
+                    __html:
+                        data[0].byline &&
+                        data[0].byline.replace(
+                            "tryniti",
+                            "<span id='trinity'>tryniti<span/>"
+                        ),
+                },
+                {
+                    __html:
+                        data[0].main &&
+                        data[0].main.replace(
+                            "Cardi B",
+                            "<span id='Cardi B'>Cardi B<span/>"
+                        ),
+                },
+            ];
+
             setModal();
             setWords(dangerousHtml);
-            setWord(data[0].word);
             setArticle(data);
         });
     }, []);
@@ -42,7 +51,6 @@ export default function Article(props) {
             console.log("el.id", el.id);
             setModal(!modal);
             setId(el.id);
-            setWord(word);
             console.log("this is working!!!! modal:", modal);
         }
     }
@@ -67,30 +75,34 @@ export default function Article(props) {
                                     <div className="article_intro">
                                         {text.intro}
                                     </div>
-                                    <div className="article_main">
-                                        {text.main}
-                                    </div>
-                                    <div className="article_endnotes">
-                                        {text.endnotes}
+                                    <div
+                                        onClick={onHandleClick}
+                                        className="article_main"
+                                        dangerouslySetInnerHTML={words[1]}
+                                    >
+                                        {/* {text.main} */}
                                     </div>
                                     <div>
                                         <div
                                             onClick={onHandleClick}
                                             className="article_byline"
-                                            dangerouslySetInnerHTML={words}
+                                            dangerouslySetInnerHTML={words[0]}
                                         />
+                                        <div className="article_endnotes">
+                                            {text.endnotes}
+                                        </div>
                                         {modal && (
                                             <Modal
                                                 modal={modal}
                                                 setModal={setModal}
                                                 modalid={modalid}
                                                 article_id={article_id}
-                                                word={word}
+                                                // word={word}
                                             />
                                         )}
                                     </div>
                                 </div>
-                            </div>
+                            </div> //article.map ends
                         );
                     })}
             </div>

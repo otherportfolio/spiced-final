@@ -554,13 +554,13 @@ app.get("/api/article", (req, res) => {
 });
 
 //todo: ////////// /modal /////////////
-app.get("/api/modal/:article_id/:word", (req, res) => {
+app.get("/api/modal/:article_id", (req, res) => {
     console.log("hit the modal route!");
-    console.log("req.params:", req.params.article_id, req.params.word);
-    db.getMedia(req.params.article_id, req.params.word)
+    console.log("req.params:", req.params.article_id);
+    db.getMedia(req.params.article_id)
         .then((results) => {
             console.log("results in getMedia:", results);
-            res.json(results.rows[0]);
+            res.json(results.rows);
         })
         .catch((err) => {
             console.log("ERROR in getMedia:", err);
